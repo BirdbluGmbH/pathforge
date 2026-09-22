@@ -1,0 +1,7 @@
+# The committed site is the rendered HTML at the repo root (index.html,
+# docs/*.html, LICENSE.html, "Third Party Notices.html", .nojekyll); the Jekyll
+# source lives in src/. This public repo holds no executables. Build output
+# goes to a throwaway temp dir, so ignore the known scratch dirs just in case.
+_site/
+_build/
+.jekyll-cache/

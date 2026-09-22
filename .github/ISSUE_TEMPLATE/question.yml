@@ -1,0 +1,30 @@
+name: Question
+description: "How do I…? — API usage, setup, or a 'does PathForge do X?' question."
+title: "[Question] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For "how do I" questions, check [Getting Started](https://birdblugmbh.github.io/pathforge/docs/GettingStarted.html) and the [FAQ](https://birdblugmbh.github.io/pathforge/docs/FAQ.html) first — if the answer is not there, this is the right place.
+  - type: dropdown
+    id: asset
+    attributes:
+      label: Asset
+      options:
+        - PathForge (Base)
+        - PathForge Pro
+        - Both
+      validations:
+        required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      validations:
+        required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What you are building, what you have tried so far, and any code or settings involved.

@@ -1,0 +1,32 @@
+name: Feature request
+description: A suggestion for a new feature or behavior in PathForge (Base or Pro).
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: asset
+    attributes:
+      label: Asset
+      options:
+        - PathForge (Base)
+        - PathForge Pro
+        - Both
+      validations:
+        required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What should change?
+      description: The feature or behavior you are after, and the problem it solves.
+      validations:
+        required: true
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Your use case
+      description: The game, scene, or workflow where you need it — scale, platform, constraints.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you have tried
+      description: Anything you have built around it in the meantime.

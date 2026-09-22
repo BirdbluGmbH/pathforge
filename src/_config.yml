@@ -1,0 +1,20 @@
+# PathForge site — Jekyll config. SOURCE lives in src/; the rendered site is
+# committed at the repo ROOT (index.html, docs/*.html, LICENSE.html,
+# "Third Party Notices.html"). The public repo holds no executables.
+#
+# Zero plugins. Every page becomes a page via EXPLICIT front matter
+# (layout + title + permalink + base).
+#
+# Link strategy: every href is RELATIVE so the site works under file://, at a
+# domain root, at any /subpath, and on a Jekyll-rendering host alike. Pages
+# carry their own depth as a front-matter variable `base` ("../" for docs/
+# pages, absent for root pages); shared chrome builds hrefs as <base><url>.
+# In-content doc links are bare same-dir .html (sibling) or ../<root page>.
+title: PathForge
+description: Native Rust pathfinding engine for Unity — deterministic, zero GC per query, one shared field for many agents.
+baseurl: ""
+repository: BirdbluGmbH/pathforge
+
+exclude:
+  - .git
+  - _site

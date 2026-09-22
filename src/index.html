@@ -1,0 +1,240 @@
+---
+layout: default
+is_doc: false
+---
+<div class="hero-band">
+  <div class="wrap hero">
+    <p class="eyebrow">PathForge for <span class="accent">Unity</span></p>
+    <h1>Fast paths for one.<br>Shared fields for many.</h1>
+    <p class="lede">One agent needs a route? You get a fast, exact path. A crowd shares a
+    goal? You build one field, and every agent reads from it.</p>
+    <div class="cta">
+      <a class="btn primary" href="docs/index.html">Read the docs</a>
+      <a class="btn dark-ghost" href="https://github.com/BirdbluGmbH/pathforge/issues">Ask a question</a>
+    </div>
+    <div class="chips">
+      <span class="chip">Zero GC per query</span>
+      <span class="chip">Deterministic</span>
+      <span class="chip">Grid · Tilemap · Hex · Waypoint · Mesh · NavMesh</span>
+      <span class="chip">Mono + IL2CPP</span>
+      <span class="chip">Rust-native core</span>
+    </div>
+  </div>
+</div>
+
+<section id="quickstart">
+  <div class="wrap">
+    <h2>Get a route in a few lines</h2>
+    <p class="sub">PathForge is a drop-in route engine for the navigation you already
+    have — it accepts your Grid, Tilemap, Hex layout, Waypoint set, triangle Mesh, or
+    Unity's baked NavMesh and routes directly over them. For triangle meshes there is
+    no grid and no extra bake step. This is a minimal, working single-agent query:</p>
+<pre class="code"><code>using UnityEngine;
+using UnityEngine.Tilemaps;
+
+// GridGraphBuilder: a present tile = blocked, an empty cell = walkable.
+var builder = new GridGraphBuilder(grid, tilemap, 20u, 15u);   // width, height (cols, rows)
+var solver  = new DnskSolver(builder.NumVertices);
+solver.BuildFrom(builder, HeuristicMode.Landmarks);
+
+uint[] buffer = new uint[512];                 // declare once, reuse — zero GC per query
+var path = solver.QueryPath(startVertex, targetVertex, buffer);
+if (path.Reachable)
+{
+    // buffer[0 .. path.PathLength-1] = the route (vertex IDs); path.Distance = total cost
+}</code></pre>
+    <p class="note">Every PathForge type is in the <code>global namespace</code> — there is
+    no <code>using</code> for a PathForge namespace. The buffer is yours to supply and reuse,
+    so the kernel allocates nothing per query.</p>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <h2>Why PathForge</h2>
+    <p class="sub">A* is a commodity. What makes PathForge worth buying is how cleanly it
+    integrates, how little it costs at runtime, and how easy it is to wire into the navigation
+    systems you already have.</p>
+    <div class="grid">
+      <div class="card">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#42576D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="5" y="5" width="14" height="14" rx="2"/>
+          <rect x="9.5" y="9.5" width="5" height="5" rx="1"/>
+          <path d="M12 2.5V5M12 19v2.5M2.5 12H5M19 12h2.5"/>
+        </svg>
+        <h3>Zero GC per query</h3>
+        <p>You supply a <code>uint[]</code> buffer; the kernel writes the path into it. No allocation, no GC spikes in tight loops.</p>
+      </div>
+      <div class="card">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#42576D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="8.5"/>
+          <circle cx="12" cy="12" r="4.5"/>
+          <circle cx="12" cy="12" r="1" fill="#42576D" stroke="none"/>
+        </svg>
+        <h3>Deterministic</h3>
+        <p>Same input → same output. Critical for multiplayer lockstep and reproducible AI.</p>
+      </div>
+      <div class="card">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#42576D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="5.5" cy="12" r="2"/>
+          <path d="M9.5 12H15M9.5 12l6.5-6M9.5 12l6.5 6"/>
+          <circle cx="18.5" cy="6" r="2"/>
+          <circle cx="18.5" cy="12" r="2"/>
+          <circle cx="18.5" cy="18" r="2"/>
+        </svg>
+        <h3>One field, many agents</h3>
+        <p>Compute a field once; hundreds of agents read their next step from it in a single batched native call.</p>
+      </div>
+      <div class="card">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#42576D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="4" width="7" height="7" rx="1.5"/>
+          <rect x="13" y="4" width="7" height="7" rx="1.5"/>
+          <rect x="4" y="13" width="7" height="7" rx="1.5"/>
+          <rect x="13" y="13" width="7" height="7" rx="1.5"/>
+        </svg>
+        <h3>Works with your navigation</h3>
+        <p>Grid, Tilemap, Hex, Waypoint, Mesh, and Unity's baked NavMesh — six adapters included.</p>
+      </div>
+      <div class="card">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#42576D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+        <h3>Native, fast, safe</h3>
+        <p>Rust kernel, C ABI, panic-catching FFI boundary, no third-party runtime
+        dependencies. Measured against our own reference baseline on identical maps:
+        0&nbsp;KB allocated per query (vs ~205&nbsp;KB in the baseline) and ~1.9&times;
+        faster route time.</p>
+      </div>
+      <div class="card">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#42576D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M15.8 8.2 13.9 13.9 8.2 15.8 10.1 10.1z"/>
+        </svg>
+        <h3>It's the GPS, not the car</h3>
+        <p>PathForge tells your units which way to go. You still drive — no animation, no steering, no collision.</p>
+      </div>
+    </div>
+    <p class="note">Obstacles change at runtime? There is no incremental update — you rebuild
+    the solver from your updated graph (or swap a pre-built field), and every agent on it
+    reroutes. The <em>SupplyRun</em> sample shows the dual-field swap pattern, and nine sample
+    scenes ship in the package (<em>GettingStarted</em> walks through them).</p>
+  </div>
+</section>
+
+<section id="platforms">
+  <div class="wrap">
+    <h2>Platforms</h2>
+    <p class="sub">Requires Unity 6 (6000.0 or later). Works with both Mono and IL2CPP
+    script backends. The native binaries ship for the four platforms below.</p>
+    <div class="table-wrap">
+      <table>
+        <caption class="sr-only">Supported platforms and architectures</caption>
+        <tr><th scope="col">Platform</th><th scope="col">Architecture</th><th scope="col">Status</th></tr>
+        <tr><td>Windows</td><td>x86_64</td><td><span class="chip">Included</span></td></tr>
+        <tr><td>macOS</td><td>x86_64 + Apple Silicon (arm64)</td><td><span class="chip">Included</span></td></tr>
+        <tr><td>Linux</td><td>x86_64 + ARM64</td><td><span class="chip">Included</span></td></tr>
+        <tr><td>Android</td><td>ARM64</td><td><span class="chip">Included</span></td></tr>
+      </table>
+    </div>
+    <p class="note"><strong>Not included:</strong> Windows 32-bit, Windows ARM64, iOS,
+    and WebGL. If your target isn't in the table,
+    <a href="https://github.com/BirdbluGmbH/pathforge/issues">file a feature request</a>
+    in the issue tracker — we build what users need next.</p>
+  </div>
+</section>
+
+<section id="tiers">
+  <div class="wrap">
+    <h2>Which tier?</h2>
+    <p class="sub">Two tiers, one deterministic native core. The rule is about
+    <strong>targets, not headcount</strong>: agents heading to <em>independent</em>
+    destinations (one path each) → Base, any number of them. A crowd sharing one —
+    or a few — destinations (one field, many readers) → Pro. Pro builds on and
+    depends on Base.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>PathForge (Base)</h3>
+        <p class="desc">Single-agent routing — <code>QueryPath</code> for one fast, exact
+        path. All six graph adapters, the <code>DnskPathFollower</code> shortcut, and
+        deterministic lockstep support.</p>
+      </div>
+      <div class="card pro">
+        <h3>PathForge Pro</h3>
+        <p class="desc">Everything in Base <strong>plus</strong> shared fields —
+        <code>ComputeField</code> / <code>ComputeWeightedField</code> for a crowd with one
+        or a few targets, and <code>BatchNextStep</code> to resolve the whole group in a
+        single native call per frame.</p>
+      </div>
+    </div>
+    <p class="note">Available on the Unity Asset Store — pricing and current offers live in the
+    store. This site is an information resource, not a checkout.</p>
+  </div>
+</section>
+
+<section id="docs">
+  <div class="wrap">
+    <h2>Documentation</h2>
+    <p class="sub">The full docs ship in the package under <code>Documentation~/</code> and are
+    rendered here so you can read them without installing anything.</p>
+    <div class="docs-list">
+      {% for d in site.data.docs %}
+      <a href="{{ d.url }}"><span class="t">{{ d.title }}</span>
+        <span class="d">{{ d.desc }}</span></a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="support">
+  <div class="wrap">
+    <h2>Support</h2>
+    <p class="sub">Support runs through our issue tracker. Please file bugs, feature
+    requests, and questions there.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/BirdbluGmbH/pathforge/issues">Open an issue</a>
+    </div>
+  </div>
+</section>
+
+<section id="impressum">
+  <div class="wrap">
+    <h2>Impressum</h2>
+    <p class="sub">§ 5 TMG/UWG</p>
+    <div class="grid">
+      <div>
+        <p class="lang">Deutsch</p>
+        <p>
+          Birdblu GmbH<br>
+          Wollinstr. 80<br>
+          70439 Stuttgart<br>
+          Deutschland
+        </p>
+        <p>
+          Geschäftsführer: Jannis Mahlitz<br>
+          Registriert bei: Amtsgericht Stuttgart, HRB 786357<br>
+          USt-IdNr.: DE356698993
+        </p>
+        <p>
+          E-Mail: <a href="mailto:info@birdblu.com">info@birdblu.com</a>
+        </p>
+      </div>
+      <div>
+        <p class="lang">English</p>
+        <p>
+          Birdblu GmbH<br>
+          Wollinstr. 80<br>
+          70439 Stuttgart<br>
+          Germany
+        </p>
+        <p>
+          Managing Director: Jannis Mahlitz<br>
+          Registered at: District Court Stuttgart (Amtsgericht Stuttgart), HRB 786357<br>
+          VAT ID (USt-IdNr.): DE356698993
+        </p>
+        <p>
+          E-mail: <a href="mailto:info@birdblu.com">info@birdblu.com</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

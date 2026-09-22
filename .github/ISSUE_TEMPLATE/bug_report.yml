@@ -1,0 +1,81 @@
+name: Bug report
+description: Something in PathForge (Base or Pro) is not working as expected.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check the [troubleshooting guide](https://birdblugmbh.github.io/pathforge/docs/Troubleshooting.html) first — most plugin-loading and ABI issues are covered there. Then fill in what applies.
+  - type: dropdown
+    id: asset
+    attributes:
+      label: Asset
+      options:
+        - PathForge (Base)
+        - PathForge Pro
+        - Both
+      validations:
+        required: true
+  - type: input
+    id: version
+    attributes:
+      label: Asset version
+      description: Shown in the package's package.json or the Asset Store listing.
+      placeholder: "1.0.0"
+      validations:
+        required: true
+  - type: input
+    id: unity
+    attributes:
+      label: Unity version
+      placeholder: "6000.0.41f1"
+      validations:
+        required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Platform + architecture
+      description: Windows x86_64 · macOS x86_64 · macOS arm64 · Linux x86_64 · Android ARM64
+      validations:
+        required: true
+  - type: dropdown
+    id: scripting
+    attributes:
+      label: Script backend
+      options:
+        - Mono
+        - IL2CPP
+      validations:
+        required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Minimal scene or code path that triggers the issue.
+      validations:
+        required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      validations:
+        required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      validations:
+        required: true
+  - type: textarea
+    id: diagnose
+    attributes:
+      label: "DnskNative.Diagnose() output"
+      description: For plugin-loading or ABI issues, run `DnskNative.Diagnose()` and paste the full output.
+      render: shell
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console logs
+      description: Full error/warning log around the issue.
+      render: log

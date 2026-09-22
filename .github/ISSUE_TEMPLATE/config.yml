@@ -1,0 +1,3 @@
+# Only the three templates (bug_report, feature_request, question) may be used.
+# No blank "New issue" form.
+blank_issues_enabled: false

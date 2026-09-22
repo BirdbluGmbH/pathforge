@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include head.html %}
+</head>
+<body id="top">
+  {%- if page.permalink contains "/docs/" -%}
+    {%- assign base = "../" -%}
+    {%- assign landing = "../index.html" -%}
+  {%- else -%}
+    {%- assign base = "" -%}
+    {%- assign landing = "index.html" -%}
+  {%- endif -%}
+  {% include header.html %}
+
+  <main id="main">
+    {% if page.is_doc %}
+    {%- assign docs = site.data.docs -%}
+    {%- assign n = docs | size -%}
+    {%- assign idx = -1 -%}
+    {%- for d in docs -%}
+      {%- if d.src == page.name -%}{%- assign idx = forloop.index0 -%}{%- endif -%}
+    {%- endfor -%}
+    {%- assign last = n | minus: 1 -%}
+    {%- assign prev = null -%}{%- assign next = null -%}
+    {%- if idx > 0 -%}{%- assign pi = idx | minus: 1 -%}{%- assign prev = docs[pi] -%}{%- endif -%}
+    {%- if idx >= 0 and idx < last -%}{%- assign ni = idx | plus: 1 -%}{%- assign next = docs[ni] -%}{%- endif -%}
+    <div class="doc-grid">
+      <article class="doc-content">
+        {{ content }}
+        {% if prev or next %}
+        <nav class="prevnext" aria-label="Adjacent pages">
+          {% if prev %}<a class="pn prev" href="{{ base }}{{ prev.url }}"><span class="lbl">Previous</span><span class="pg">{{ prev.title }}</span></a>{% else %}<span class="pn spacer"></span>{% endif %}
+          {% if next %}<a class="pn next" href="{{ base }}{{ next.url }}"><span class="lbl">Next</span><span class="pg">{{ next.title }}</span></a>{% else %}<span class="pn spacer"></span>{% endif %}
+        </nav>
+        {% endif %}
+      </article>
+      <aside class="doc-rail" aria-label="Documentation">
+        <p class="grp">Documentation</p>
+        <nav>
+          {% for d in docs %}
+            <a href="{{ base }}{{ d.url }}"{% if d.src == page.name %} class="active" aria-current="page"{% endif %}>{{ d.title }}</a>
+          {% endfor %}
+        </nav>
+        <p class="grp" id="onpage-grp">On this page</p>
+        <nav id="onpage" class="onpage" aria-label="On this page"></nav>
+      </aside>
+    </div>
+    {% else %}
+    {{ content }}
+    {% endif %}
+  </main>
+
+  {% include footer.html %}
+
+  {% if page.is_doc %}
+  <script>
+  (function () {
+    var content = document.querySelector('.doc-content');
+    var rail = document.getElementById('onpage');
+    if (!content || !rail) return;
+    var heads = content.querySelectorAll('h2, h3');
+    var list = [];
+    heads.forEach(function (h) {
+      if (!h.id) return;
+      var a = document.createElement('a');
+      a.className = 'toc' + (h.tagName === 'H3' ? ' sub' : '');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent;
+      rail.appendChild(a);
+      list.push({ h: h, a: a });
+    });
+    if (!list.length) {
+      var g = document.getElementById('onpage-grp');
+      if (g) g.style.display = 'none';
+      rail.style.display = 'none';
+      return;
+    }
+    function onScroll() {
+      var y = window.scrollY + 100;
+      var cur = list[0];
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].h.offsetTop <= y) cur = list[i];
+      }
+      list.forEach(function (it) { it.a.classList.remove('active'); });
+      if (cur) cur.a.classList.add('active');
+    }
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { onScroll(); }
+    else {
+      var ticking = false;
+      window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(function () { onScroll(); ticking = false; }); }
+      }, { passive: true });
+      onScroll();
+    }
+  })();
+  </script>
+  {% endif %}
+</body>
+</html>

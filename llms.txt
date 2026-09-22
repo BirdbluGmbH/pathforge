@@ -1,0 +1,63 @@
+# PathForge — native, deterministic pathfinding for Unity
+
+## What it is
+PathForge is a native Rust pathfinding engine for Unity (UPM package). It computes
+routes over the graph of your world — a single-agent path, or one shared distance
+field that many agents read from. It is a **route engine, not a movement
+controller**: it tells your units which way to go; you still animate, steer, and
+resolve collisions. It is the GPS, not the car.
+
+## Capabilities
+- **Single path** — `DnskSolver.QueryPath(source, target, buffer)`: one fast, exact route.
+- **Shared field for crowds** — `DnskField.ComputeField(target)` or `ComputeWeightedField(targets, weights)`, then `NextStep` / `BatchNextStep`: one computation serves every agent, in one native call per frame.
+- **Graph adapters** — Grid, Tilemap (per-tile terrain weights), Hex, Waypoint, triangle Mesh (terrain), and Unity's baked NavMesh.
+- **Bring your own graph** — implement the single `IGraphSource` interface for any custom graph.
+- **Deterministic** — integer math, fixed tie-breaks: same input, same route, on every platform, every run. Safe for replays and multiplayer lockstep.
+- **Zero allocation per query** — you supply a `uint[]` buffer; the kernel writes the route into it. No garbage-collection pressure in hot loops.
+- **Self-diagnose** — `DnskNative.Available` / `DnskNative.Diagnose()` answer the common "plugin won't load" question.
+- **Runtime changes** — no incremental graph update: when the world changes, rebuild the solver from your updated graph (or swap a pre-built field) and every agent on it reroutes.
+- **Two tiers** — Base (single query) and Pro (shared fields / multi-target / batched next-step). Agents with independent destinations → Base (any count). Agents sharing one/few destinations (one field) → Pro. Pro builds on and depends on Base.
+- **Nine sample scenes** ship in the package (Base + Pro demos); GettingStarted walks through them.
+
+## Minimal example
+```csharp
+using UnityEngine;
+using UnityEngine.Tilemaps;
+
+var builder = new GridGraphBuilder(grid, tilemap, 20u, 15u);   // your Tilemap
+var solver  = new DnskSolver(builder.NumVertices);
+solver.BuildFrom(builder, HeuristicMode.Landmarks);
+
+uint[] buffer = new uint[512];                 // declare once, reuse — zero GC per query
+var path = solver.QueryPath(startVertex, targetVertex, buffer);
+if (path.Reachable)
+{
+    // buffer[0 .. path.PathLength-1] holds the route (vertex IDs)
+    // path.Distance is the total cost
+}
+```
+All PathForge types are in the **global namespace** — there is no `using` for a
+PathForge namespace. Full API: docs/API-Reference.html.
+
+## Numbers
+Measured against **our internal reference baseline** (a plain A* used in our own
+benchmarks), on identical maps — *not* against any commercial product:
+- 0 KB allocated per query vs ~205 KB in that baseline.
+- ~1.9× faster route time than that baseline (40 agents / 100 routes).
+- `BatchNextStep` resolves a whole crowd in a single native call.
+
+## Platforms
+- **Included:** Unity 6 (6000.0 or later), Mono and IL2CPP. Windows x86_64, macOS x86_64 + arm64, Linux x86_64 + ARM64, Android ARM64.
+- **Not included:** Windows 32-bit, Windows ARM64, iOS, WebGL.
+
+## Integration frame
+A drop-in route engine for the navigation you already have: it accepts your Grid,
+Tilemap, Hex layout, Waypoint set, triangle Mesh, or Unity's baked NavMesh, and
+routes directly over them. For triangle meshes it needs no grid and no extra bake step.
+
+## Links
+- Docs (also shipped in-package under `Documentation~/`): https://birdblugmbh.github.io/pathforge/docs/
+  - Getting Started, API Reference, Bring Your Graph, Troubleshooting, FAQ
+- Support: GitHub issue tracker — three forms (Bug report, Feature request, Question): https://github.com/BirdbluGmbH/pathforge/issues. How-to questions: Troubleshooting guide at https://birdblugmbh.github.io/pathforge/docs/Troubleshooting.html. Security reports privately: info@birdblu.com (see SECURITY.md).
+- Vendor: Birdblu GmbH (Impressum on the site)
+- Purchased on the Unity Asset Store — this site is an information resource, not a checkout.

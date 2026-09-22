@@ -1,0 +1,45 @@
+# Documentation pages, in reading order. Single source of truth for:
+#   - the shared doc rail (the "Documentation" list on every doc page)
+#   - the prev/next pagination
+#   - the /docs/ hub (docs/index.md) and the landing's docs-cards section
+# Keep the seven entries in sync with the .md files (docs/*.md + root LICENSE.md
+# + "Third Party Notices.md").
+#
+#   src   = the SOURCE .md filename (basename, WITH extension). Matched against
+#           Jekyll's page.name to drive the active-rail / prev-next logic — using
+#           the source name (not the URL) makes matching immune to the space in
+#           "Third Party Notices" and to custom permalinks.
+#   url   = the page URL RELATIVE TO THE SITE ROOT, without a leading slash
+#           ("docs/GettingStarted.html", "LICENSE.html"). Hrefs are built as
+#           {{ page.base }}{{ url }} so they stay correct at both depths and
+#           under file://.
+#   title = display name.
+#   desc  = one-line description for the cards.
+- src: "GettingStarted.md"
+  url: "docs/GettingStarted.html"
+  title: "Getting Started"
+  desc: "Install, build your first path, then fields, all six adapters, and genre patterns."
+- src: "API-Reference.md"
+  url: "docs/API-Reference.html"
+  title: "API Reference"
+  desc: "Every public type and method, with parameter and error detail."
+- src: "BringYourGraph.md"
+  url: "docs/BringYourGraph.html"
+  title: "Bring Your Graph"
+  desc: "Implement IGraphSource for custom graph structures."
+- src: "Troubleshooting.md"
+  url: "docs/Troubleshooting.html"
+  title: "Troubleshooting"
+  desc: "Plugin loading, wrong CPU, ABI mismatch, and known limitations."
+- src: "FAQ.md"
+  url: "docs/FAQ.html"
+  title: "FAQ"
+  desc: "Platforms, IL2CPP, mobile, and deterministic multiplayer."
+- src: "LICENSE.md"
+  url: "LICENSE.html"
+  title: "License"
+  desc: "Asset Store EULA — not an open-source license."
+- src: "Third Party Notices.md"
+  url: "Third%20Party%20Notices.html"
+  title: "Third Party Notices"
+  desc: "Runtime and build-time dependencies, and their licenses."

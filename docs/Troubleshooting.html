@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Troubleshooting</title>
+<meta name="description" content="Troubleshooting — PathForge documentation.">
+<style>
+/*
+  PathForge — single site stylesheet (Travertine Navy).
+  One file styles the landing AND the documentation: same tokens, same header,
+  same footer, same visual rhythm. Included by the default layout.
+  No external assets — works on any static host.
+  NOTE: keep this file free of Liquid tags; Jekyll processes includes, so a
+  stray liquid tag here would re-run this include.
+*/
+:root{
+  --canvas:#F2EEE5; --surface:#FBF8F2; --surface-soft:#EAE4D9;
+  --ink:#1D2630; --muted:#4E4842;
+  --primary:#42576D; --primary-hover:#3D5165; --primary-pressed:#394B5E; --on-primary:#FFFFFF;
+  --accent:#9C7F5A; --on-accent:#141B23;
+  --line:#D7CEC1; --control-border:#837D75;
+  --badge:#EBE3D7; --on-badge:#1D2630; --badge-border:#D7CEC1;
+  --inverse-bg:#1D2630; --inverse-text:#FBF8F2; --inverse-muted:#DDDCD8;
+  --link:#394B5F; --selected:#E5E5E3;
+  --font-ui:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-serif:Georgia,"Times New Roman",serif;
+  --font-mono:ui-monospace,"SFMono-Regular",Consolas,monospace;
+  --maxw:960px; --e1:0 2px 6px rgb(24 35 46/.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--canvas);color:var(--ink);
+  font:16px/1.5 var(--font-ui);-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:underline;text-decoration-thickness:1px;
+  text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+a:focus-visible{outline:3px solid var(--primary);outline-offset:3px}
+::selection{background:var(--primary);color:var(--on-primary)}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+.skip-link{position:absolute;left:-9999px;top:0;z-index:20;background:var(--surface);
+  color:var(--ink);padding:10px 16px;border:1px solid var(--control-border);border-radius:10px}
+.skip-link:focus{left:16px;top:12px}
+
+/* ---- Shared header (top navigation) ---- */
+header{position:sticky;top:0;z-index:10;background:rgba(242,238,229,.85);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{max-width:var(--maxw);margin:0 auto;padding:0 20px;min-height:72px;
+  display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.brand{display:inline-flex;align-items:center;gap:10px;font-size:18px;font-weight:700;
+  color:var(--ink);text-decoration:none}
+.links{margin-left:auto;display:flex;gap:20px;font-size:15px;font-weight:600;flex-wrap:wrap}
+.links a{color:var(--ink);text-decoration:none}
+.links a:hover{color:var(--primary)}
+.links a.active{color:var(--primary);box-shadow:inset 0 -2px 0 var(--accent)}
+
+/* ---- Dark editorial band — the one navy field of the page (hero) ---- */
+.hero-band{background:var(--inverse-bg)}
+.hero-band a:focus-visible{outline-color:var(--inverse-text)}
+.hero{padding:96px 0 80px}
+.hero .eyebrow{margin:0 0 20px;font-family:var(--font-ui);font-size:14px;
+  font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--inverse-muted)}
+.hero h1{margin:0 0 24px;font-family:var(--font-serif);font-weight:400;
+  font-size:clamp(40px,4.5vw,72px);line-height:1.05;letter-spacing:-.035em;
+  color:var(--inverse-text)}
+.hero h1 .accent{color:var(--accent)}
+.hero .lede{margin:0 0 32px;max-width:640px;font-family:var(--font-serif);
+  font-size:18px;line-height:1.7;color:var(--inverse-muted)}
+
+/* ---- Buttons + chips ---- */
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;
+  padding:0 20px;border-radius:10px;border:1px solid transparent;
+  font-family:var(--font-ui);font-size:15px;font-weight:600;line-height:20px;
+  text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.btn.primary:hover{background:var(--primary-hover);border-color:var(--primary-hover);
+  text-decoration:none}
+.btn.primary:active{background:var(--primary-pressed);border-color:var(--primary-pressed)}
+.btn.secondary{background:var(--surface);border-color:var(--control-border);color:var(--ink)}
+.btn.secondary:hover{background:var(--selected);border-color:var(--control-border);
+  color:var(--ink);text-decoration:none}
+.btn.secondary:active{box-shadow:inset 0 0 0 2px var(--control-border)}
+.btn.dark-ghost{background:transparent;border-color:var(--inverse-muted);
+  color:var(--inverse-text)}
+.btn.dark-ghost:hover{background:var(--surface);border-color:var(--surface);
+  color:var(--ink);text-decoration:none}
+.chips{margin-top:24px}
+.chip{display:inline-flex;align-items:center;min-height:28px;padding:2px 12px;
+  border-radius:999px;background:var(--badge);border:1px solid var(--badge-border);
+  color:var(--on-badge);font-size:13px;font-weight:600;margin:0 8px 8px 0}
+
+/* ---- Landing content sections ---- */
+section{padding:64px 0;scroll-margin-top:84px}
+section + section{border-top:1px solid var(--line)}
+h2{margin:0 0 8px;font-family:var(--font-serif);font-weight:700;font-size:36px;
+  line-height:1.2;letter-spacing:-.03em;color:var(--ink)}
+.sub{margin:0 0 32px;max-width:640px;font-size:18px;line-height:1.7;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.lang{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  padding:24px}
+.card h3{margin:0 0 8px;font-size:20px;line-height:1.3;font-weight:700;
+  letter-spacing:-.015em;color:var(--ink)}
+.card p{margin:0;font-size:16px;line-height:1.5;color:var(--muted)}
+.ic{display:block;width:24px;height:24px;margin-bottom:12px}
+.card.pro{border-color:var(--accent)}
+.card .desc{margin-top:12px}
+.table-wrap{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:12px 16px;background:var(--surface-soft);font-size:14px;
+  line-height:20px;font-weight:600;color:var(--ink)}
+td{padding:14px 16px;border-top:1px solid var(--line);line-height:22px;color:var(--ink)}
+.note{margin:14px 0 0;font-size:14px;line-height:20px;color:var(--muted)}
+code{padding:2px 6px;border:1px solid var(--line);border-radius:6px;
+  background:var(--surface-soft);font-family:var(--font-mono);font-size:14px;
+  color:var(--ink)}
+pre.code{margin:16px 0 0;padding:18px 20px;border:1px solid var(--line);
+  border-left:4px solid var(--accent);border-radius:12px;background:var(--inverse-bg);
+  overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;
+  color:var(--inverse-text)}
+pre.code code{border:0;background:none;padding:0;color:inherit;font-size:inherit}
+pre.code .c{color:var(--inverse-muted)}
+.docs-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.docs-list a{display:block;padding:16px 18px;border:1px solid var(--line);
+  border-radius:16px;background:var(--surface);color:var(--ink);text-decoration:none}
+.docs-list a:hover{border-color:var(--primary);box-shadow:var(--e1)}
+.docs-list a .t{display:block;font-size:16px;line-height:1.375;font-weight:700}
+.docs-list a .d{display:block;margin-top:4px;font-size:14px;line-height:1.5;
+  color:var(--muted)}
+
+/* ---- Shared footer ---- */
+footer{border-top:1px solid var(--line);padding:32px 0 40px;font-size:14px;
+  line-height:1.5;color:var(--muted)}
+footer .frow{display:flex;align-items:flex-start;justify-content:space-between;
+  gap:24px;flex-wrap:wrap}
+footer .fbrand{font-size:15px;font-weight:600;color:var(--ink)}
+footer .fcopy{margin-top:6px}
+footer .flinks{display:flex;gap:20px}
+footer .flinks a{color:var(--muted);text-decoration:none}
+footer .flinks a:hover{color:var(--primary)}
+
+/* ======================================================================
+   DOCUMENTATION — same shell, reading column + a slim navigation rail.
+   Scoped under .doc-grid / .doc-content so it never fights the landing.
+   ====================================================================== */
+/* One shared frame: the doc grid uses the SAME --maxw as the landing's header,
+   footer and sections, so every page's outer edges align — "one page, one design". */
+.doc-grid{max-width:var(--maxw);margin:0 auto;padding:0 20px;display:grid;
+  grid-template-columns:minmax(0,1fr) 248px;column-gap:36px}
+.doc-content{padding:40px 0 96px;width:100%}
+.doc-content h1{font-family:var(--font-serif);font-weight:700;font-size:40px;
+  line-height:1.15;letter-spacing:-.02em;margin:0 0 12px;color:var(--ink)}
+.doc-content .lead{font-size:18px;color:var(--muted);line-height:1.7}
+/* doc H2 matches the landing's section H2 (36px) — one heading scale site-wide. */
+.doc-content h2{font-family:var(--font-serif);font-weight:700;font-size:36px;
+  line-height:1.2;letter-spacing:-.03em;margin:48px 0 14px;padding-top:20px;
+  border-top:1px solid var(--line);color:var(--ink);scroll-margin-top:84px}
+.doc-content h3{font-family:var(--font-ui);font-weight:700;font-size:20px;
+  margin:30px 0 10px;color:var(--ink);scroll-margin-top:84px}
+.doc-content h4{font-size:16px;margin:22px 0 8px;color:var(--ink);scroll-margin-top:84px}
+.doc-content p{margin:0 0 15px;line-height:1.65}
+.doc-content ul,.doc-content ol{margin:0 0 16px;padding-left:24px;line-height:1.65}
+.doc-content li{margin:5px 0}
+.doc-content li>ul,.doc-content li>ol{margin:5px 0 5px}
+.doc-content blockquote{margin:0 0 16px;padding:4px 18px;
+  border-left:4px solid var(--accent);background:var(--surface);color:var(--muted);
+  border-radius:0 10px 10px 0}
+.doc-content blockquote p:last-child{margin-bottom:0}
+.doc-content hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+.doc-content .table-wrap{margin:0 0 18px}
+.doc-content table{margin:0 0 4px}
+.doc-content code{font-size:13.5px}
+.doc-content pre{margin:0 0 18px;padding:16px 18px;border:1px solid var(--line);
+  border-left:4px solid var(--accent);border-radius:12px;background:var(--inverse-bg);
+  overflow-x:auto}
+.doc-content pre code{border:0;background:none;padding:0;color:var(--inverse-text);
+  font-size:13.5px;line-height:1.6;white-space:pre}
+
+/* Slim light rail (doc list + "On this page"): sits on the same --canvas as the
+   article, separated only by the grid column-gap — NOT a full-height --surface
+   panel (that full-bleed surface column is the main "separate app" tell). */
+.doc-rail{position:sticky;top:72px;align-self:start;max-height:calc(100vh - 72px);
+  overflow-y:auto;padding:40px 4px 40px;font-size:14px}
+.doc-rail .grp{font-size:11.5px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.doc-rail .grp:not(:first-child){margin-top:22px}
+.doc-rail a{display:block;padding:6px 10px;border-radius:8px;color:var(--ink);
+  text-decoration:none;margin-bottom:1px;line-height:1.35}
+.doc-rail a:hover{background:var(--surface-soft);text-decoration:none}
+/* active = 3px start-edge + light selected fill (guide §7.1), not a solid navy pill */
+.doc-rail a.active{background:var(--selected);color:var(--ink);font-weight:600;
+  box-shadow:inset 3px 0 0 var(--primary)}
+.doc-rail a.toc{padding-left:20px;font-size:13px;color:var(--muted)}
+.doc-rail a.toc.sub{padding-left:34px;font-size:12.5px}
+.doc-rail a.toc:hover{color:var(--ink)}
+.doc-rail a.toc.active{background:var(--selected);color:var(--ink);
+  box-shadow:inset 3px 0 0 var(--accent)}
+
+/* prev/next pagination under a doc article */
+.prevnext{display:flex;gap:14px;margin-top:56px;padding-top:24px;
+  border-top:1px solid var(--line)}
+.pn{flex:1;display:flex;flex-direction:column;gap:4px;padding:14px 16px;
+  border:1px solid var(--line);border-radius:14px;background:var(--surface);
+  text-decoration:none;color:var(--ink)}
+.pn:hover{border-color:var(--primary);box-shadow:var(--e1);text-decoration:none}
+.pn .lbl{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted)}
+.pn .pg{font-size:15px;font-weight:600}
+.pn.next{text-align:right;align-items:flex-end}
+.pn.spacer{visibility:hidden}
+
+/* Mobile: rail becomes a top block; content full width. */
+@media (max-width:960px){
+  .doc-grid{grid-template-columns:1fr;column-gap:0}
+  .doc-rail{position:static;max-height:none;padding:8px 0 24px;
+    border-bottom:1px solid var(--line);margin-bottom:8px}
+  .doc-rail .grp:not(:first-child){margin-top:16px}
+  .doc-content{padding:28px 0 64px}
+  .hero{padding:64px 0 48px}
+  section{padding:40px 0}
+  .nav{gap:16px}
+  .links{gap:16px}
+  h2{font-size:28.8px;line-height:1.2}
+  .card{padding:16px}
+}
+
+</style>
+
+</head>
+<body id="top"><a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="nav">
+    <a class="brand" href="../">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3.4" y="3.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="10.4" y="3.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="17.4" y="3.4" width="3.2" height="3.2" rx="1" fill="#9C7F5A"/>
+        <rect x="3.4" y="10.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="10.4" y="10.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="17.4" y="10.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="3.4" y="17.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="10.4" y="17.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <path d="M5 19 L12 19 L12 12 L19 12 L19 5" stroke="#42576D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      PathForge
+    </a>
+    <nav class="links" aria-label="Main">
+      <a href="../index.html#quickstart">Quick start</a>
+      <a href="../index.html#why">Why</a>
+      <a href="../index.html#platforms">Platforms</a>
+      <a href="../index.html#tiers">Tiers</a>
+      <a href="../docs/index.html" class="active" aria-current="page">Docs</a>
+      <a href="https://github.com/BirdbluGmbH/pathforge/issues">Support</a>
+      <a href="../index.html#impressum">Impressum</a>
+    </nav>
+  </div>
+</header>
+
+
+  <main id="main">
+    <div class="doc-grid">
+      <article class="doc-content">
+        <h1 id="pathforge--troubleshooting">PathForge — Troubleshooting</h1>
+
+<p>Most “PathForge isn’t working” reports are about the <strong>native plugin not loading</strong>
+or <strong>loading the wrong one</strong>. PathForge is built to tell you exactly what happened:
+the moment the native layer fails, <code class="language-plaintext highlighter-rouge">DnskSolver</code> throws with a diagnostic string, and
+<code class="language-plaintext highlighter-rouge">DnskNative.Diagnose()</code> produces a full report. Start there.</p>
+
+<h2 id="first-thing-to-check">First thing to check</h2>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(!</span><span class="n">DnskNative</span><span class="p">.</span><span class="n">Available</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Debug</span><span class="p">.</span><span class="nf">LogError</span><span class="p">(</span><span class="n">DnskNative</span><span class="p">.</span><span class="nf">Diagnose</span><span class="p">());</span> <span class="c1">// full report: what it looked for, what it found</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Diagnose()</code> reports, per platform, which DLL name it expected, every search path it
+tried, and the OS error code from the load attempt. That output tells you which of
+the cases below applies.</p>
+
+<hr />
+
+<h2 id="dllnotfoundexception--the-plugin-wont-load"><code class="language-plaintext highlighter-rouge">DllNotFoundException</code> — the plugin won’t load</h2>
+
+<p>The native library wasn’t found at all. In order of likelihood:</p>
+
+<ol>
+  <li><strong>Wrong platform binary is enabled.</strong> Each binary is tagged to one platform/CPU
+via its Unity Plugin Importer (see below). If you’re on Windows but the Windows
+<code class="language-plaintext highlighter-rouge">.dll</code> is disabled, you get this. Open the file in the Project window → Inspector →
+<strong>Platforms</strong>, and make sure the row for your build target is checked.</li>
+  <li><strong>You’re building for a platform you don’t ship for.</strong> PathForge 1.0.0 ships
+Windows (x86_64), macOS (x86_64 + arm64), Linux (x86_64), and Android (ARM64).
+There is no iOS, Windows 32-bit, Windows ARM64, or WebGL binary in this
+release — building for one will fail. See <a href="#known-limitations">Known Limitations</a>.</li>
+  <li><strong>Windows: missing or mismatched C runtime.</strong> The PathForge DLL does not require
+the VC++ Redistributable. If you still see this on Windows, the <code class="language-plaintext highlighter-rouge">Diagnose()</code>
+report will show the Win32 error:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">126</code> — module not found (the .dll isn’t where Unity looks).</li>
+      <li><code class="language-plaintext highlighter-rouge">193</code> — the .dll is for the wrong CPU (32-bit app loading a 64-bit DLL).</li>
+      <li><code class="language-plaintext highlighter-rouge">14001</code> / <code class="language-plaintext highlighter-rouge">127</code> — missing C runtime (should not happen with PathForge;
+if it does, report it).</li>
+    </ul>
+  </li>
+  <li><strong>The binary is in the wrong folder.</strong> If you copied the native library out of
+the package, it won’t be found. Keep it in the package’s <code class="language-plaintext highlighter-rouge">Runtime/Plugins/</code>
+folder.</li>
+</ol>
+
+<h2 id="entrypointnotfoundexception--a-function-is-missing"><code class="language-plaintext highlighter-rouge">EntryPointNotFoundException</code> — a function is missing</h2>
+
+<p>The DLL loaded, but a specific symbol isn’t there. Causes:</p>
+
+<ol>
+  <li><strong>Mixed versions.</strong> The C# binding and the native binary are from different
+releases. A binary from an older/newer build lacks the entry point the current
+C# expects. Re-install the package so the C# and all binaries are the same
+version. (PathForge checks the ABI version at construction — a mismatch throws a
+clear “ABI mismatch” error before you hit this.)</li>
+  <li><strong>Wrong binary for the CPU.</strong> A 32-bit entry point missing from a 64-bit DLL, or
+vice versa. Same fix as above — enable the binary matching your build target.</li>
+</ol>
+
+<h2 id="wrong-cpu-architecture">Wrong CPU architecture</h2>
+
+<p>Symptoms: <code class="language-plaintext highlighter-rouge">193</code> on Windows, “bad CPU type” on macOS, or a crash on load.</p>
+
+<ul>
+  <li><strong>Windows:</strong> make sure your build target is 64-bit. PathForge ships x86_64 only
+(no 32-bit, no ARM64 Windows).</li>
+  <li><strong>macOS:</strong> both Intel (<code class="language-plaintext highlighter-rouge">.x86_64.dylib</code>) and Apple Silicon (<code class="language-plaintext highlighter-rouge">.arm64.dylib</code>) are
+included and tagged correctly — Unity picks the right one automatically. If you
+see a mismatch, check the Plugin Importer on both files.</li>
+  <li><strong>Linux:</strong> x86_64 (<code class="language-plaintext highlighter-rouge">libdnsk_ffi.so</code>) and ARM64 (<code class="language-plaintext highlighter-rouge">libdnsk_ffi.aarch64.so</code>) are both
+included and tagged.</li>
+</ul>
+
+<h2 id="plugin-importer-misconfiguration">Plugin Importer misconfiguration</h2>
+
+<p>If you edited the binaries’ import settings, restore them. Each file must have:</p>
+
+<ul>
+  <li><strong>Any</strong> platform: <strong>disabled</strong>.</li>
+  <li>The <strong>one</strong> matching platform (Windows / macOS / Linux) + the right CPU: <strong>enabled</strong>.</li>
+  <li><strong>Editor</strong>: enabled (so the samples work in the editor).</li>
+</ul>
+
+<p>You can re-import the original files from the package to reset them. If you
+<strong>renamed</strong> a binary, its import settings break — don’t rename the shipped files.</p>
+
+<h2 id="apple-silicon-m1m2m3">Apple Silicon (M1/M2/M3)</h2>
+
+<p>No action needed — both <code class="language-plaintext highlighter-rouge">.dylib</code> variants ship and are tagged. If a project
+previously saved on an Intel Mac is opened on Apple Silicon, force a re-import
+(Window → Package Manager → select PathForge → right-click → Reimport), then verify
+the arm64 <code class="language-plaintext highlighter-rouge">.dylib</code>’s Platform row is checked.</p>
+
+<h2 id="android--ios">Android / iOS</h2>
+
+<p><strong>Android (ARM64): included.</strong> The Android <code class="language-plaintext highlighter-rouge">.so</code> is tagged to the Android/ARM64
+platform. On Android, Unity loads the <code class="language-plaintext highlighter-rouge">.so</code> from the plugin automatically, so no
+extra C# code is needed — <code class="language-plaintext highlighter-rouge">DllImport("dnsk_ffi")</code> resolves it. Make sure the
+Android binary’s Plugin Importer row for <em>Android / ARM64</em> is enabled.</p>
+
+<p><strong>iOS: not supported.</strong> There is no iOS static library in the package, and iOS
+requires a static build (<code class="language-plaintext highlighter-rouge">DllImport("__Internal")</code>) that isn’t part of this
+release. Building for iOS will fail to link. See <a href="#known-limitations">Known Limitations</a>.</p>
+
+<h2 id="linux-native-dependencies">Linux native dependencies</h2>
+
+<p>The Linux <code class="language-plaintext highlighter-rouge">.so</code> links only against the standard C library — no third-party shared
+libraries. If you get an “undefined symbol” or “cannot open shared object” error
+on Linux, you have a mismatched binary — re-install the package.</p>
+
+<h2 id="editor-restart--stale-plugin">Editor restart / stale plugin</h2>
+
+<p>After upgrading PathForge, or if the editor loads a cached copy of the native
+library:</p>
+
+<ol>
+  <li>Close Unity.</li>
+  <li>Delete the project’s <code class="language-plaintext highlighter-rouge">Library/</code> folder (safe to delete; Unity rebuilds it).</li>
+  <li>Reopen the project.</li>
+</ol>
+
+<p>This forces the plugin to re-load from the package. If you changed the binary
+files directly, a full editor restart is required — Unity does not hot-reload
+native plugins.</p>
+
+<h2 id="abi-mismatch">ABI mismatch</h2>
+
+<p>If you accidentally mix a C# binding with a native binary from a different
+PathForge version, the constructor fails fast with a clear “ABI mismatch” error.
+This is intentional — a half-compatible binary would otherwise return silent
+garbage. Fix: make sure the C# code and all native binaries come from the same
+package version (re-install the package).</p>
+
+<hr />
+
+<h2 id="known-limitations">Known Limitations</h2>
+
+<ul>
+  <li><strong>Platforms:</strong> Windows x86_64, macOS x86_64 + arm64, Linux x86_64 + arm64, and
+Android ARM64. <strong>iOS is not supported</strong> (needs a static build not in this
+release); nor are Windows 32-bit, Windows ARM64, or WebGL.</li>
+  <li><strong>No incremental graph updates.</strong> When the graph changes, dispose the solver and
+rebuild. (The <code class="language-plaintext highlighter-rouge">SupplyRun</code> sample shows the dual-solver pattern to make this cheap.)</li>
+  <li><strong>Not local avoidance.</strong> PathForge produces routes; it does not resolve
+agent-to-agent collisions.</li>
+  <li><strong>Main-thread only.</strong> All PathForge calls must run on Unity’s main thread.</li>
+  <li><strong>No Web / WebGL target.</strong> There is no WASM build.</li>
+</ul>
+
+<h2 id="dependencies">Dependencies</h2>
+
+<p>PathForge requires only two <strong>built-in</strong> Unity modules — no third-party packages:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">com.unity.modules.tilemap</code></li>
+  <li><code class="language-plaintext highlighter-rouge">com.unity.modules.ai</code></li>
+</ul>
+
+<p>The native kernel has <strong>no third-party runtime dependencies</strong> (see
+<a href="../Third%20Party%20Notices.html">Third Party Notices</a>).</p>
+
+<h2 id="threading">Threading</h2>
+
+<ul>
+  <li><strong>Call PathForge from the main thread only.</strong> It wraps Unity-facing state and the
+samples are written that way.</li>
+  <li>The native kernel handle is <strong>not thread-safe</strong>. Do not share one <code class="language-plaintext highlighter-rouge">DnskSolver</code>
+across threads. If you need parallelism, use one solver per thread.</li>
+  <li>There are <strong>no callbacks and no background threads</strong> in PathForge — it is
+request/response only. Nothing runs after you stop calling it.</li>
+</ul>
+
+<h2 id="mono-and-il2cpp">Mono and IL2CPP</h2>
+
+<p>PathForge works with <strong>both</strong> script backends. All types crossing the FFI boundary
+are blittable (primitive integers, pointers, sequential-layout structs); there is no
+<code class="language-plaintext highlighter-rouge">Reflection.Emit</code> or dynamic proxying, which is what breaks most plugins under
+IL2CPP. The samples run identically under Mono and IL2CPP.</p>
+
+        
+        <nav class="prevnext" aria-label="Adjacent pages">
+          <a class="pn prev" href="../docs/BringYourGraph.html"><span class="lbl">Previous</span><span class="pg">Bring Your Graph</span></a>
+          <a class="pn next" href="../docs/FAQ.html"><span class="lbl">Next</span><span class="pg">FAQ</span></a>
+        </nav>
+        
+      </article>
+      <aside class="doc-rail" aria-label="Documentation">
+        <p class="grp">Documentation</p>
+        <nav>
+          
+            <a href="../docs/GettingStarted.html">Getting Started</a>
+          
+            <a href="../docs/API-Reference.html">API Reference</a>
+          
+            <a href="../docs/BringYourGraph.html">Bring Your Graph</a>
+          
+            <a href="../docs/Troubleshooting.html" class="active" aria-current="page">Troubleshooting</a>
+          
+            <a href="../docs/FAQ.html">FAQ</a>
+          
+            <a href="../LICENSE.html">License</a>
+          
+            <a href="../Third%20Party%20Notices.html">Third Party Notices</a>
+          
+        </nav>
+        <p class="grp" id="onpage-grp">On this page</p>
+        <nav id="onpage" class="onpage" aria-label="On this page"></nav>
+      </aside>
+    </div>
+    
+  </main>
+
+  <footer>
+  <div class="wrap frow">
+    <div>
+      <div class="fbrand">PathForge by Birdblu GmbH</div>
+      <div class="fcopy">© 2026 Birdblu GmbH</div>
+    </div>
+    <nav class="flinks" aria-label="Legal">
+      <a href="../index.html#impressum">Impressum</a>
+      <a href="../LICENSE.html">License</a>
+    </nav>
+  </div>
+</footer>
+
+
+  
+  <script>
+  (function () {
+    var content = document.querySelector('.doc-content');
+    var rail = document.getElementById('onpage');
+    if (!content || !rail) return;
+    var heads = content.querySelectorAll('h2, h3');
+    var list = [];
+    heads.forEach(function (h) {
+      if (!h.id) return;
+      var a = document.createElement('a');
+      a.className = 'toc' + (h.tagName === 'H3' ? ' sub' : '');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent;
+      rail.appendChild(a);
+      list.push({ h: h, a: a });
+    });
+    if (!list.length) {
+      var g = document.getElementById('onpage-grp');
+      if (g) g.style.display = 'none';
+      rail.style.display = 'none';
+      return;
+    }
+    function onScroll() {
+      var y = window.scrollY + 100;
+      var cur = list[0];
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].h.offsetTop <= y) cur = list[i];
+      }
+      list.forEach(function (it) { it.a.classList.remove('active'); });
+      if (cur) cur.a.classList.add('active');
+    }
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { onScroll(); }
+    else {
+      var ticking = false;
+      window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(function () { onScroll(); ticking = false; }); }
+      }, { passive: true });
+      onScroll();
+    }
+  })();
+  </script>
+  
+</body>
+</html>

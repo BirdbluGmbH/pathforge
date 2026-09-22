@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting Started</title>
+<meta name="description" content="Getting Started — PathForge documentation.">
+<style>
+/*
+  PathForge — single site stylesheet (Travertine Navy).
+  One file styles the landing AND the documentation: same tokens, same header,
+  same footer, same visual rhythm. Included by the default layout.
+  No external assets — works on any static host.
+  NOTE: keep this file free of Liquid tags; Jekyll processes includes, so a
+  stray liquid tag here would re-run this include.
+*/
+:root{
+  --canvas:#F2EEE5; --surface:#FBF8F2; --surface-soft:#EAE4D9;
+  --ink:#1D2630; --muted:#4E4842;
+  --primary:#42576D; --primary-hover:#3D5165; --primary-pressed:#394B5E; --on-primary:#FFFFFF;
+  --accent:#9C7F5A; --on-accent:#141B23;
+  --line:#D7CEC1; --control-border:#837D75;
+  --badge:#EBE3D7; --on-badge:#1D2630; --badge-border:#D7CEC1;
+  --inverse-bg:#1D2630; --inverse-text:#FBF8F2; --inverse-muted:#DDDCD8;
+  --link:#394B5F; --selected:#E5E5E3;
+  --font-ui:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-serif:Georgia,"Times New Roman",serif;
+  --font-mono:ui-monospace,"SFMono-Regular",Consolas,monospace;
+  --maxw:960px; --e1:0 2px 6px rgb(24 35 46/.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--canvas);color:var(--ink);
+  font:16px/1.5 var(--font-ui);-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:underline;text-decoration-thickness:1px;
+  text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+a:focus-visible{outline:3px solid var(--primary);outline-offset:3px}
+::selection{background:var(--primary);color:var(--on-primary)}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+.skip-link{position:absolute;left:-9999px;top:0;z-index:20;background:var(--surface);
+  color:var(--ink);padding:10px 16px;border:1px solid var(--control-border);border-radius:10px}
+.skip-link:focus{left:16px;top:12px}
+
+/* ---- Shared header (top navigation) ---- */
+header{position:sticky;top:0;z-index:10;background:rgba(242,238,229,.85);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{max-width:var(--maxw);margin:0 auto;padding:0 20px;min-height:72px;
+  display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.brand{display:inline-flex;align-items:center;gap:10px;font-size:18px;font-weight:700;
+  color:var(--ink);text-decoration:none}
+.links{margin-left:auto;display:flex;gap:20px;font-size:15px;font-weight:600;flex-wrap:wrap}
+.links a{color:var(--ink);text-decoration:none}
+.links a:hover{color:var(--primary)}
+.links a.active{color:var(--primary);box-shadow:inset 0 -2px 0 var(--accent)}
+
+/* ---- Dark editorial band — the one navy field of the page (hero) ---- */
+.hero-band{background:var(--inverse-bg)}
+.hero-band a:focus-visible{outline-color:var(--inverse-text)}
+.hero{padding:96px 0 80px}
+.hero .eyebrow{margin:0 0 20px;font-family:var(--font-ui);font-size:14px;
+  font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--inverse-muted)}
+.hero h1{margin:0 0 24px;font-family:var(--font-serif);font-weight:400;
+  font-size:clamp(40px,4.5vw,72px);line-height:1.05;letter-spacing:-.035em;
+  color:var(--inverse-text)}
+.hero h1 .accent{color:var(--accent)}
+.hero .lede{margin:0 0 32px;max-width:640px;font-family:var(--font-serif);
+  font-size:18px;line-height:1.7;color:var(--inverse-muted)}
+
+/* ---- Buttons + chips ---- */
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;
+  padding:0 20px;border-radius:10px;border:1px solid transparent;
+  font-family:var(--font-ui);font-size:15px;font-weight:600;line-height:20px;
+  text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.btn.primary:hover{background:var(--primary-hover);border-color:var(--primary-hover);
+  text-decoration:none}
+.btn.primary:active{background:var(--primary-pressed);border-color:var(--primary-pressed)}
+.btn.secondary{background:var(--surface);border-color:var(--control-border);color:var(--ink)}
+.btn.secondary:hover{background:var(--selected);border-color:var(--control-border);
+  color:var(--ink);text-decoration:none}
+.btn.secondary:active{box-shadow:inset 0 0 0 2px var(--control-border)}
+.btn.dark-ghost{background:transparent;border-color:var(--inverse-muted);
+  color:var(--inverse-text)}
+.btn.dark-ghost:hover{background:var(--surface);border-color:var(--surface);
+  color:var(--ink);text-decoration:none}
+.chips{margin-top:24px}
+.chip{display:inline-flex;align-items:center;min-height:28px;padding:2px 12px;
+  border-radius:999px;background:var(--badge);border:1px solid var(--badge-border);
+  color:var(--on-badge);font-size:13px;font-weight:600;margin:0 8px 8px 0}
+
+/* ---- Landing content sections ---- */
+section{padding:64px 0;scroll-margin-top:84px}
+section + section{border-top:1px solid var(--line)}
+h2{margin:0 0 8px;font-family:var(--font-serif);font-weight:700;font-size:36px;
+  line-height:1.2;letter-spacing:-.03em;color:var(--ink)}
+.sub{margin:0 0 32px;max-width:640px;font-size:18px;line-height:1.7;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.lang{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  padding:24px}
+.card h3{margin:0 0 8px;font-size:20px;line-height:1.3;font-weight:700;
+  letter-spacing:-.015em;color:var(--ink)}
+.card p{margin:0;font-size:16px;line-height:1.5;color:var(--muted)}
+.ic{display:block;width:24px;height:24px;margin-bottom:12px}
+.card.pro{border-color:var(--accent)}
+.card .desc{margin-top:12px}
+.table-wrap{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:12px 16px;background:var(--surface-soft);font-size:14px;
+  line-height:20px;font-weight:600;color:var(--ink)}
+td{padding:14px 16px;border-top:1px solid var(--line);line-height:22px;color:var(--ink)}
+.note{margin:14px 0 0;font-size:14px;line-height:20px;color:var(--muted)}
+code{padding:2px 6px;border:1px solid var(--line);border-radius:6px;
+  background:var(--surface-soft);font-family:var(--font-mono);font-size:14px;
+  color:var(--ink)}
+pre.code{margin:16px 0 0;padding:18px 20px;border:1px solid var(--line);
+  border-left:4px solid var(--accent);border-radius:12px;background:var(--inverse-bg);
+  overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;
+  color:var(--inverse-text)}
+pre.code code{border:0;background:none;padding:0;color:inherit;font-size:inherit}
+pre.code .c{color:var(--inverse-muted)}
+.docs-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.docs-list a{display:block;padding:16px 18px;border:1px solid var(--line);
+  border-radius:16px;background:var(--surface);color:var(--ink);text-decoration:none}
+.docs-list a:hover{border-color:var(--primary);box-shadow:var(--e1)}
+.docs-list a .t{display:block;font-size:16px;line-height:1.375;font-weight:700}
+.docs-list a .d{display:block;margin-top:4px;font-size:14px;line-height:1.5;
+  color:var(--muted)}
+
+/* ---- Shared footer ---- */
+footer{border-top:1px solid var(--line);padding:32px 0 40px;font-size:14px;
+  line-height:1.5;color:var(--muted)}
+footer .frow{display:flex;align-items:flex-start;justify-content:space-between;
+  gap:24px;flex-wrap:wrap}
+footer .fbrand{font-size:15px;font-weight:600;color:var(--ink)}
+footer .fcopy{margin-top:6px}
+footer .flinks{display:flex;gap:20px}
+footer .flinks a{color:var(--muted);text-decoration:none}
+footer .flinks a:hover{color:var(--primary)}
+
+/* ======================================================================
+   DOCUMENTATION — same shell, reading column + a slim navigation rail.
+   Scoped under .doc-grid / .doc-content so it never fights the landing.
+   ====================================================================== */
+/* One shared frame: the doc grid uses the SAME --maxw as the landing's header,
+   footer and sections, so every page's outer edges align — "one page, one design". */
+.doc-grid{max-width:var(--maxw);margin:0 auto;padding:0 20px;display:grid;
+  grid-template-columns:minmax(0,1fr) 248px;column-gap:36px}
+.doc-content{padding:40px 0 96px;width:100%}
+.doc-content h1{font-family:var(--font-serif);font-weight:700;font-size:40px;
+  line-height:1.15;letter-spacing:-.02em;margin:0 0 12px;color:var(--ink)}
+.doc-content .lead{font-size:18px;color:var(--muted);line-height:1.7}
+/* doc H2 matches the landing's section H2 (36px) — one heading scale site-wide. */
+.doc-content h2{font-family:var(--font-serif);font-weight:700;font-size:36px;
+  line-height:1.2;letter-spacing:-.03em;margin:48px 0 14px;padding-top:20px;
+  border-top:1px solid var(--line);color:var(--ink);scroll-margin-top:84px}
+.doc-content h3{font-family:var(--font-ui);font-weight:700;font-size:20px;
+  margin:30px 0 10px;color:var(--ink);scroll-margin-top:84px}
+.doc-content h4{font-size:16px;margin:22px 0 8px;color:var(--ink);scroll-margin-top:84px}
+.doc-content p{margin:0 0 15px;line-height:1.65}
+.doc-content ul,.doc-content ol{margin:0 0 16px;padding-left:24px;line-height:1.65}
+.doc-content li{margin:5px 0}
+.doc-content li>ul,.doc-content li>ol{margin:5px 0 5px}
+.doc-content blockquote{margin:0 0 16px;padding:4px 18px;
+  border-left:4px solid var(--accent);background:var(--surface);color:var(--muted);
+  border-radius:0 10px 10px 0}
+.doc-content blockquote p:last-child{margin-bottom:0}
+.doc-content hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+.doc-content .table-wrap{margin:0 0 18px}
+.doc-content table{margin:0 0 4px}
+.doc-content code{font-size:13.5px}
+.doc-content pre{margin:0 0 18px;padding:16px 18px;border:1px solid var(--line);
+  border-left:4px solid var(--accent);border-radius:12px;background:var(--inverse-bg);
+  overflow-x:auto}
+.doc-content pre code{border:0;background:none;padding:0;color:var(--inverse-text);
+  font-size:13.5px;line-height:1.6;white-space:pre}
+
+/* Slim light rail (doc list + "On this page"): sits on the same --canvas as the
+   article, separated only by the grid column-gap — NOT a full-height --surface
+   panel (that full-bleed surface column is the main "separate app" tell). */
+.doc-rail{position:sticky;top:72px;align-self:start;max-height:calc(100vh - 72px);
+  overflow-y:auto;padding:40px 4px 40px;font-size:14px}
+.doc-rail .grp{font-size:11.5px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.doc-rail .grp:not(:first-child){margin-top:22px}
+.doc-rail a{display:block;padding:6px 10px;border-radius:8px;color:var(--ink);
+  text-decoration:none;margin-bottom:1px;line-height:1.35}
+.doc-rail a:hover{background:var(--surface-soft);text-decoration:none}
+/* active = 3px start-edge + light selected fill (guide §7.1), not a solid navy pill */
+.doc-rail a.active{background:var(--selected);color:var(--ink);font-weight:600;
+  box-shadow:inset 3px 0 0 var(--primary)}
+.doc-rail a.toc{padding-left:20px;font-size:13px;color:var(--muted)}
+.doc-rail a.toc.sub{padding-left:34px;font-size:12.5px}
+.doc-rail a.toc:hover{color:var(--ink)}
+.doc-rail a.toc.active{background:var(--selected);color:var(--ink);
+  box-shadow:inset 3px 0 0 var(--accent)}
+
+/* prev/next pagination under a doc article */
+.prevnext{display:flex;gap:14px;margin-top:56px;padding-top:24px;
+  border-top:1px solid var(--line)}
+.pn{flex:1;display:flex;flex-direction:column;gap:4px;padding:14px 16px;
+  border:1px solid var(--line);border-radius:14px;background:var(--surface);
+  text-decoration:none;color:var(--ink)}
+.pn:hover{border-color:var(--primary);box-shadow:var(--e1);text-decoration:none}
+.pn .lbl{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted)}
+.pn .pg{font-size:15px;font-weight:600}
+.pn.next{text-align:right;align-items:flex-end}
+.pn.spacer{visibility:hidden}
+
+/* Mobile: rail becomes a top block; content full width. */
+@media (max-width:960px){
+  .doc-grid{grid-template-columns:1fr;column-gap:0}
+  .doc-rail{position:static;max-height:none;padding:8px 0 24px;
+    border-bottom:1px solid var(--line);margin-bottom:8px}
+  .doc-rail .grp:not(:first-child){margin-top:16px}
+  .doc-content{padding:28px 0 64px}
+  .hero{padding:64px 0 48px}
+  section{padding:40px 0}
+  .nav{gap:16px}
+  .links{gap:16px}
+  h2{font-size:28.8px;line-height:1.2}
+  .card{padding:16px}
+}
+
+</style>
+
+</head>
+<body id="top"><a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="nav">
+    <a class="brand" href="../">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3.4" y="3.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="10.4" y="3.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="17.4" y="3.4" width="3.2" height="3.2" rx="1" fill="#9C7F5A"/>
+        <rect x="3.4" y="10.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="10.4" y="10.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="17.4" y="10.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="3.4" y="17.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="10.4" y="17.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <path d="M5 19 L12 19 L12 12 L19 12 L19 5" stroke="#42576D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      PathForge
+    </a>
+    <nav class="links" aria-label="Main">
+      <a href="../index.html#quickstart">Quick start</a>
+      <a href="../index.html#why">Why</a>
+      <a href="../index.html#platforms">Platforms</a>
+      <a href="../index.html#tiers">Tiers</a>
+      <a href="../docs/index.html" class="active" aria-current="page">Docs</a>
+      <a href="https://github.com/BirdbluGmbH/pathforge/issues">Support</a>
+      <a href="../index.html#impressum">Impressum</a>
+    </nav>
+  </div>
+</header>
+
+
+  <main id="main">
+    <div class="doc-grid">
+      <article class="doc-content">
+        <h1 id="pathforge--getting-started">PathForge — Getting Started</h1>
+
+<blockquote>
+  <p>Fast paths for one. Shared fields for many.</p>
+</blockquote>
+
+<p>PathForge is a native pathfinding engine for Unity. You give it a map. It tells your
+units how to move. The difference: PathForge runs in compiled Rust code, allocates
+zero managed memory per query, and lets you route hundreds of agents with a single
+computation.</p>
+
+<hr />
+
+<h2 id="installation">Installation</h2>
+
+<p>PathForge is a Unity UPM package. Import it via the Package Manager or by placing
+the package folder in your project’s <code class="language-plaintext highlighter-rouge">Packages/</code> directory.</p>
+
+<h3 id="what-you-need">What You Need</h3>
+
+<ul>
+  <li>Unity 6 (6000.0 or later)</li>
+  <li>C# scripting basics (you’ve written a <code class="language-plaintext highlighter-rouge">MonoBehaviour</code> before)</li>
+  <li>A scene with something to navigate on (a Tilemap, a Mesh, or a set of waypoints)</li>
+</ul>
+
+<h3 id="what-pathforge-is-and-isnt">What PathForge Is and Isn’t</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Is</th>
+      <th>Isn’t</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A route computation engine</td>
+      <td>A movement controller (no animation, no steering)</td>
+    </tr>
+    <tr>
+      <td>Works with Tilemap, Mesh, NavMesh, Waypoints, Hex</td>
+      <td>A replacement for Unity NavMesh baking</td>
+    </tr>
+    <tr>
+      <td>Zero GC allocations per query</td>
+      <td>A local avoidance system (agents still collide — you handle that)</td>
+    </tr>
+    <tr>
+      <td>Deterministic (same input = same output)</td>
+      <td>A behavior tree or decision-making system</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Think of it this way:</strong> PathForge is the GPS. You still drive the car.</p>
+
+<hr />
+
+<h2 id="your-first-path">Your First Path</h2>
+
+<p>Let’s get one enemy walking from point A to point B on a grid.</p>
+
+<h3 id="step-1-set-up-your-grid">Step 1: Set Up Your Grid</h3>
+
+<p>Create a Grid and Tilemap in your scene (GameObject → 3D Object → Grid). Place some
+obstacle tiles where you want walls.</p>
+
+<h3 id="step-2-write-the-script">Step 2: Write the Script</h3>
+
+<p>Attach this script to any GameObject in your scene and assign the references in the
+Inspector:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine.Tilemaps</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">MyPathfinding</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
+<span class="p">{</span>
+    <span class="p">[</span><span class="n">SerializeField</span><span class="p">]</span> <span class="k">private</span> <span class="n">Grid</span> <span class="n">grid</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">SerializeField</span><span class="p">]</span> <span class="k">private</span> <span class="n">Tilemap</span> <span class="n">tilemap</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">SerializeField</span><span class="p">]</span> <span class="k">private</span> <span class="n">Transform</span> <span class="n">enemy</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">SerializeField</span><span class="p">]</span> <span class="k">private</span> <span class="n">Transform</span> <span class="n">target</span><span class="p">;</span>
+
+    <span class="k">private</span> <span class="n">DnskSolver</span> <span class="n">solver</span><span class="p">;</span>
+    <span class="k">private</span> <span class="n">GridGraphBuilder</span> <span class="n">builder</span><span class="p">;</span>
+
+    <span class="c1">// Reused across queries — never allocate inside Update()</span>
+    <span class="k">private</span> <span class="kt">uint</span><span class="p">[]</span> <span class="n">pathBuffer</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">uint</span><span class="p">[</span><span class="m">512</span><span class="p">];</span>
+
+    <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// 20 columns, 15 rows — must match your Tilemap size</span>
+        <span class="c1">// GridGraphBuilder convention: tile present = blocked, empty = walkable</span>
+        <span class="n">builder</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">GridGraphBuilder</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">tilemap</span><span class="p">,</span> <span class="m">20u</span><span class="p">,</span> <span class="m">15u</span><span class="p">);</span>
+
+        <span class="n">solver</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DnskSolver</span><span class="p">(</span><span class="n">builder</span><span class="p">.</span><span class="n">NumVertices</span><span class="p">);</span>
+        <span class="n">solver</span><span class="p">.</span><span class="nf">BuildFrom</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">HeuristicMode</span><span class="p">.</span><span class="n">Landmarks</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">void</span> <span class="nf">Update</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="nf">GetMouseButtonDown</span><span class="p">(</span><span class="m">0</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="kt">uint</span> <span class="n">startVertex</span> <span class="p">=</span> <span class="nf">WorldToVertex</span><span class="p">(</span><span class="n">enemy</span><span class="p">.</span><span class="n">position</span><span class="p">);</span>
+            <span class="kt">uint</span> <span class="n">targetVertex</span> <span class="p">=</span> <span class="nf">WorldToVertex</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">position</span><span class="p">);</span>
+
+            <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="n">solver</span><span class="p">.</span><span class="nf">QueryPath</span><span class="p">(</span><span class="n">startVertex</span><span class="p">,</span> <span class="n">targetVertex</span><span class="p">,</span> <span class="n">pathBuffer</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">Reachable</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="s">$"Path found! </span><span class="p">{</span><span class="n">result</span><span class="p">.</span><span class="n">PathLength</span><span class="p">}</span><span class="s"> steps, cost </span><span class="p">{</span><span class="n">result</span><span class="p">.</span><span class="n">Distance</span><span class="p">}</span><span class="s">"</span><span class="p">);</span>
+                <span class="c1">// pathBuffer[0..PathLength-1] holds the vertex IDs of the route</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="s">"No path — target is unreachable"</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">void</span> <span class="nf">OnDestroy</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">solver</span><span class="p">?.</span><span class="nf">Dispose</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">// vertex = x + y * columns (like reading a chess board left-to-right, top-to-bottom)</span>
+    <span class="kt">uint</span> <span class="nf">WorldToVertex</span><span class="p">(</span><span class="n">Vector3</span> <span class="n">position</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">x</span> <span class="p">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="nf">FloorToInt</span><span class="p">(</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">y</span> <span class="p">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="nf">FloorToInt</span><span class="p">(</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kt">uint</span><span class="p">)(</span><span class="n">x</span> <span class="p">+</span> <span class="n">y</span> <span class="p">*</span> <span class="m">20</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">Vector3</span> <span class="nf">VertexToWorld</span><span class="p">(</span><span class="kt">uint</span> <span class="n">vertex</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">uint</span> <span class="n">x</span> <span class="p">=</span> <span class="n">vertex</span> <span class="p">%</span> <span class="m">20</span><span class="p">;</span>
+        <span class="kt">uint</span> <span class="n">y</span> <span class="p">=</span> <span class="n">vertex</span> <span class="p">/</span> <span class="m">20</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">grid</span><span class="p">.</span><span class="nf">GetCellCenterWorld</span><span class="p">(</span><span class="k">new</span> <span class="nf">Vector3Int</span><span class="p">((</span><span class="kt">int</span><span class="p">)</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">y</span><span class="p">,</span> <span class="m">0</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Why these values?</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">20u, 15u</code></td>
+      <td>Grid dimensions — columns and rows. The <code class="language-plaintext highlighter-rouge">u</code> means <code class="language-plaintext highlighter-rouge">uint</code> (unsigned integer). Vertex IDs are always positive whole numbers, like cell numbers on a chess board.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">512</code> (buffer size)</td>
+      <td>Maximum path length in cells. For a 20×15 grid (300 cells), 512 is more than enough. A safe upper bound is <code class="language-plaintext highlighter-rouge">cols × rows</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">HeuristicMode.Landmarks</code></td>
+      <td>Smart shortcuts for grid-based maps. Typically 2-5× faster than plain Dijkstra. Use <code class="language-plaintext highlighter-rouge">HeuristicMode.Dijkstra</code> only for triangle meshes or very small grids.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Why a buffer?</strong></p>
+
+<p>PathForge doesn’t allocate memory for each query. You provide a <code class="language-plaintext highlighter-rouge">uint[]</code> array and
+the kernel writes the path directly into it. This means zero garbage collection
+pressure — declare <code class="language-plaintext highlighter-rouge">pathBuffer</code> as a field, never inside <code class="language-plaintext highlighter-rouge">Update()</code>.</p>
+
+<h3 id="how-vertex-ids-work">How Vertex IDs Work</h3>
+
+<p>The grid is a 2D surface flattened into a single list of cells:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  x→
+  0  1  2  3  4  ...  19
+0 ┌──┬──┬──┬──┬──┐
+  │0 │1 │2 │3 │4 │   vertex = x + y * 20
+1 ├──┼──┼──┼──┼──┤   (20 = number of columns)
+  │20│21│22│23│24│
+  └──┴──┴──┴──┴──┘
+  ↑
+  y
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">GridGraphBuilder</code> provides a <code class="language-plaintext highlighter-rouge">VertexToWorld()</code> helper (vertex → world
+position) so you don’t have to do the “vertex to world” math yourself. The
+reverse direction — “world to vertex” — is your game’s job, because it depends on
+how <em>you</em> place agents on the grid (snapping to cell centers, clamping to bounds,
+rounding). The quick-start example above shows the standard one-line version
+(<code class="language-plaintext highlighter-rouge">x + y * columns</code>). If you use a different grid convention, that’s the one place
+you adapt it.</p>
+
+<hr />
+
+<h2 id="from-one-agent-to-many">From One Agent to Many</h2>
+
+<h3 id="decision-tree-query-or-field">Decision tree: query or field?</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>How many agents need a route, and where do they go?
+
+├── 1 agent → 1 target .................... QueryPath()
+│        (one search, one path)
+│
+├── A few agents → DIFFERENT targets ...... QueryPath() per agent
+│        (or BatchQuery() to group same-target pairs)
+│
+└── 5+ agents → SAME (or a few) targets .... ComputeField() /
+         ComputeWeightedField()  +  BatchNextStep()
+         (one computation serves every agent, every frame)
+</code></pre></div></div>
+
+<p>Rule of thumb: <strong>the more agents share a destination, the more the field wins.</strong>
+One agent → query. A crowd → field.</p>
+
+<p>The single-query pattern works fine for a few units. But what happens when you have
+50 enemies all heading toward the same base?</p>
+
+<p><strong>The naive approach:</strong> 50 separate <code class="language-plaintext highlighter-rouge">QueryPath()</code> calls. Each one runs a full search.
+On a large map, that’s 50 searches competing for CPU time — visible frame stutters
+at wave start.</p>
+
+<p><strong>The PathForge approach:</strong> Compute a <strong>field</strong> once. Every agent reads its next step
+from that field. One computation. Zero per-frame search cost.</p>
+
+<h3 id="what-is-a-field">What Is a Field?</h3>
+
+<p>Imagine standing on any cell of your map and looking toward the base. A field tells
+you “which neighbor is closer to the base?” — for every cell, simultaneously.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Before field:                    After ComputeField(base):
+┌──┬──┬──┐                       ┌──┬──┬──┐
+│  │  │  │                       │← │← │↓ │  Each cell knows which
+├──┼──┼──┤                       ├──┼──┼──┤  neighbor leads toward the
+│  │  │  │  →  one computation   │← │· │← │  base. "·" is the base.
+├──┼──┼──┤                       ├──┼──┼──┤
+│  │  │· │                       │↓ │↑ │↑ │
+└──┴──┴──┘                       └──┴──┴──┘
+</code></pre></div></div>
+
+<p>Once computed, asking “which way should I go from here?” is just looking up the
+direction stored in that cell — no search, no calculation.</p>
+
+<h3 id="complete-example-many-agents-one-field">Complete Example: Many Agents, One Field</h3>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine.Tilemaps</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">ManyAgents</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
+<span class="p">{</span>
+    <span class="p">[</span><span class="n">SerializeField</span><span class="p">]</span> <span class="k">private</span> <span class="n">Grid</span> <span class="n">grid</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">SerializeField</span><span class="p">]</span> <span class="k">private</span> <span class="n">Tilemap</span> <span class="n">tilemap</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">SerializeField</span><span class="p">]</span> <span class="k">private</span> <span class="n">Transform</span><span class="p">[]</span> <span class="n">enemies</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">SerializeField</span><span class="p">]</span> <span class="k">private</span> <span class="n">Transform</span> <span class="n">basePosition</span><span class="p">;</span>
+
+    <span class="k">private</span> <span class="n">DnskSolver</span> <span class="n">solver</span><span class="p">;</span>
+    <span class="k">private</span> <span class="n">GridGraphBuilder</span> <span class="n">builder</span><span class="p">;</span>
+    <span class="k">private</span> <span class="n">DnskField</span> <span class="n">field</span><span class="p">;</span>
+
+    <span class="c1">// Field output — distance from each cell to the base</span>
+    <span class="k">private</span> <span class="kt">uint</span><span class="p">[]</span> <span class="n">distances</span><span class="p">;</span>
+
+    <span class="c1">// Batch arrays — filled each frame, one native call for all agents</span>
+    <span class="k">private</span> <span class="kt">uint</span><span class="p">[]</span> <span class="n">batchVerts</span><span class="p">;</span>
+    <span class="k">private</span> <span class="kt">uint</span><span class="p">[]</span> <span class="n">batchNext</span><span class="p">;</span>
+    <span class="k">private</span> <span class="kt">bool</span><span class="p">[]</span> <span class="n">batchTerminal</span><span class="p">;</span>
+
+    <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">builder</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">GridGraphBuilder</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">tilemap</span><span class="p">,</span> <span class="m">20u</span><span class="p">,</span> <span class="m">15u</span><span class="p">);</span>
+        <span class="n">solver</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DnskSolver</span><span class="p">(</span><span class="n">builder</span><span class="p">.</span><span class="n">NumVertices</span><span class="p">);</span>
+        <span class="n">solver</span><span class="p">.</span><span class="nf">BuildFrom</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">HeuristicMode</span><span class="p">.</span><span class="n">Landmarks</span><span class="p">);</span>
+
+        <span class="c1">// Create field and compute ONCE</span>
+        <span class="n">field</span> <span class="p">=</span> <span class="n">solver</span><span class="p">.</span><span class="nf">CreateField</span><span class="p">();</span>
+        <span class="n">distances</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">uint</span><span class="p">[</span><span class="n">builder</span><span class="p">.</span><span class="n">NumVertices</span><span class="p">];</span>
+        <span class="n">field</span><span class="p">.</span><span class="nf">ComputeField</span><span class="p">(</span><span class="nf">WorldToVertex</span><span class="p">(</span><span class="n">basePosition</span><span class="p">.</span><span class="n">position</span><span class="p">),</span> <span class="n">distances</span><span class="p">);</span>
+
+        <span class="c1">// Allocate batch arrays once</span>
+        <span class="kt">int</span> <span class="n">count</span> <span class="p">=</span> <span class="n">enemies</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span>
+        <span class="n">batchVerts</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">uint</span><span class="p">[</span><span class="n">count</span><span class="p">];</span>
+        <span class="n">batchNext</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">uint</span><span class="p">[</span><span class="n">count</span><span class="p">];</span>
+        <span class="n">batchTerminal</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">bool</span><span class="p">[</span><span class="n">count</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="k">void</span> <span class="nf">Update</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">count</span> <span class="p">=</span> <span class="n">enemies</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span>
+
+        <span class="c1">// Fill current positions</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">count</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+            <span class="n">batchVerts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">=</span> <span class="nf">WorldToVertex</span><span class="p">(</span><span class="n">enemies</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">position</span><span class="p">);</span>
+
+        <span class="c1">// ONE native call resolves all agents</span>
+        <span class="kt">int</span> <span class="n">valid</span> <span class="p">=</span> <span class="n">field</span><span class="p">.</span><span class="nf">BatchNextStep</span><span class="p">(</span><span class="n">batchVerts</span><span class="p">,</span> <span class="n">batchNext</span><span class="p">,</span> <span class="n">batchTerminal</span><span class="p">);</span>
+
+        <span class="c1">// Apply results</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">valid</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">batchTerminal</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="p">{</span>
+                <span class="c1">// Agent reached the base — handle arrival</span>
+                <span class="n">Debug</span><span class="p">.</span><span class="nf">Log</span><span class="p">(</span><span class="s">$"Enemy </span><span class="p">{</span><span class="n">i</span><span class="p">}</span><span class="s"> reached the base!"</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">Vector3</span> <span class="n">targetPos</span> <span class="p">=</span> <span class="n">builder</span><span class="p">.</span><span class="nf">VertexToWorld</span><span class="p">(</span><span class="n">batchNext</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+                <span class="n">enemies</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">position</span> <span class="p">=</span> <span class="n">Vector3</span><span class="p">.</span><span class="nf">MoveTowards</span><span class="p">(</span>
+                    <span class="n">enemies</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">position</span><span class="p">,</span> <span class="n">targetPos</span><span class="p">,</span> <span class="m">3f</span> <span class="p">*</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">void</span> <span class="nf">OnDestroy</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">solver</span><span class="p">?.</span><span class="nf">Dispose</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kt">uint</span> <span class="nf">WorldToVertex</span><span class="p">(</span><span class="n">Vector3</span> <span class="n">position</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">x</span> <span class="p">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="nf">FloorToInt</span><span class="p">(</span><span class="n">position</span><span class="p">.</span><span class="n">x</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">y</span> <span class="p">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="nf">FloorToInt</span><span class="p">(</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kt">uint</span><span class="p">)(</span><span class="n">x</span> <span class="p">+</span> <span class="n">y</span> <span class="p">*</span> <span class="m">20</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Why <code class="language-plaintext highlighter-rouge">uint[] distances</code>?</strong></p>
+
+<p>The field computation fills this array with the distance from each cell to the target.
+<code class="language-plaintext highlighter-rouge">distances[v] = uint.MaxValue</code> means that cell cannot reach the target (blocked off).
+You don’t have to use this array — it’s optional output that lets you visualize
+reachability or build heatmaps.</p>
+
+<p><strong>The numbers:</strong> On a 40-agent fleet, <code class="language-plaintext highlighter-rouge">BatchNextStep()</code> is typically 10-30× faster
+than 40 separate <code class="language-plaintext highlighter-rouge">NextStep()</code> calls because the cross-language call overhead is paid
+once, not 40 times.</p>
+
+<hr />
+
+<h2 id="genre-patterns">Genre Patterns</h2>
+
+<h3 id="tower-defense">Tower Defense</h3>
+
+<p><strong>Scenario:</strong> Enemies spawn at the edge and walk toward your base. Waves of 50-200
+units. The map has walls and corridors that shape enemy movement.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Build once at scene start</span>
+<span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">GridGraphBuilder</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">tilemap</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">rows</span><span class="p">);</span>
+<span class="n">solver</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DnskSolver</span><span class="p">(</span><span class="n">builder</span><span class="p">.</span><span class="n">NumVertices</span><span class="p">);</span>
+<span class="n">solver</span><span class="p">.</span><span class="nf">BuildFrom</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">HeuristicMode</span><span class="p">.</span><span class="n">Landmarks</span><span class="p">);</span>
+
+<span class="c1">// Compute field to the base — ONE computation serves every enemy, every wave</span>
+<span class="kt">var</span> <span class="n">field</span> <span class="p">=</span> <span class="n">solver</span><span class="p">.</span><span class="nf">CreateField</span><span class="p">();</span>
+<span class="kt">uint</span><span class="p">[]</span> <span class="n">distances</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">uint</span><span class="p">[</span><span class="n">builder</span><span class="p">.</span><span class="n">NumVertices</span><span class="p">];</span>
+<span class="n">field</span><span class="p">.</span><span class="nf">ComputeField</span><span class="p">(</span><span class="n">baseVertex</span><span class="p">,</span> <span class="n">distances</span><span class="p">);</span>
+
+<span class="c1">// Each frame: batch all enemies into one call</span>
+<span class="kt">int</span> <span class="n">valid</span> <span class="p">=</span> <span class="n">field</span><span class="p">.</span><span class="nf">BatchNextStep</span><span class="p">(</span><span class="n">enemyVerts</span><span class="p">,</span> <span class="n">nextVerts</span><span class="p">,</span> <span class="n">terminals</span><span class="p">);</span>
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">valid</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">terminals</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="nf">HandleEnemyArrival</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+    <span class="k">else</span>
+        <span class="nf">MoveEnemyTo</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">nextVerts</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Why this works:</strong> The field is computed once. Adding more enemies costs nothing.
+Adding more waves costs nothing. The only cost is the initial flood, which runs in
+compiled code and typically takes microseconds.</p>
+
+<h3 id="colony-sim--rts">Colony Sim / RTS</h3>
+
+<p><strong>Scenario:</strong> Workers need to find the nearest resource, storage, or exit. There are
+multiple destinations, and each worker should go to the closest one.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Multiple targets: resource nodes, storage buildings, exits</span>
+<span class="kt">uint</span><span class="p">[]</span> <span class="n">targets</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">uint</span><span class="p">[]</span> <span class="p">{</span> <span class="n">resourceA</span><span class="p">,</span> <span class="n">resourceB</span><span class="p">,</span> <span class="n">storage</span><span class="p">,</span> <span class="n">exit1</span><span class="p">,</span> <span class="n">exit2</span> <span class="p">};</span>
+<span class="kt">uint</span><span class="p">[]</span> <span class="n">distances</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">uint</span><span class="p">[</span><span class="n">builder</span><span class="p">.</span><span class="n">NumVertices</span><span class="p">];</span>
+<span class="kt">uint</span><span class="p">[]</span> <span class="n">roots</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">uint</span><span class="p">[</span><span class="n">builder</span><span class="p">.</span><span class="n">NumVertices</span><span class="p">];</span>
+
+<span class="kt">var</span> <span class="n">field</span> <span class="p">=</span> <span class="n">solver</span><span class="p">.</span><span class="nf">CreateField</span><span class="p">();</span>
+<span class="c1">// null = equal weight for all targets (no preference)</span>
+<span class="n">field</span><span class="p">.</span><span class="nf">ComputeWeightedField</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="n">distances</span><span class="p">,</span> <span class="n">roots</span><span class="p">);</span>
+
+<span class="c1">// Each worker: find nearest target, then follow the field</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">worker</span> <span class="k">in</span> <span class="n">workers</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">uint</span> <span class="n">myTarget</span> <span class="p">=</span> <span class="n">field</span><span class="p">.</span><span class="nf">Root</span><span class="p">(</span><span class="n">worker</span><span class="p">.</span><span class="n">currentVertex</span><span class="p">);</span> <span class="c1">// nearest target</span>
+    <span class="kt">var</span> <span class="n">step</span> <span class="p">=</span> <span class="n">field</span><span class="p">.</span><span class="nf">NextStep</span><span class="p">(</span><span class="n">worker</span><span class="p">.</span><span class="n">currentVertex</span><span class="p">);</span>
+    <span class="n">worker</span><span class="p">.</span><span class="nf">MoveTo</span><span class="p">(</span><span class="n">step</span><span class="p">.</span><span class="n">NextVertex</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>What <code class="language-plaintext highlighter-rouge">roots</code> tells you:</strong> After <code class="language-plaintext highlighter-rouge">ComputeWeightedField</code>, the <code class="language-plaintext highlighter-rouge">roots</code> array divides
+the map into zones. Every cell knows which target it “belongs to.” Like drawing a map
+where each region is colored by the nearest city.</p>
+
+<p><strong>The <code class="language-plaintext highlighter-rouge">costs</code> parameter:</strong> Pass <code class="language-plaintext highlighter-rouge">null</code> for equal weight. Pass a <code class="language-plaintext highlighter-rouge">uint[]</code> (one value
+per target) to weight targets differently — for example, a storage building that’s
+half full gets a lower cost, attracting more workers.</p>
+
+<h3 id="dynamic-obstacles">Dynamic Obstacles</h3>
+
+<p><strong>Scenario:</strong> A mudslide blocks a road. Enemies need to reroute instantly.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// When the world changes, rebuild the solver</span>
+<span class="n">solver</span><span class="p">.</span><span class="nf">Dispose</span><span class="p">();</span> <span class="c1">// free old memory</span>
+<span class="n">solver</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DnskSolver</span><span class="p">(</span><span class="n">builder</span><span class="p">.</span><span class="n">NumVertices</span><span class="p">);</span>
+<span class="n">solver</span><span class="p">.</span><span class="nf">BuildFrom</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">HeuristicMode</span><span class="p">.</span><span class="n">Landmarks</span><span class="p">);</span>
+
+<span class="c1">// Recompute the field — enemies reroute automatically</span>
+<span class="n">field</span> <span class="p">=</span> <span class="n">solver</span><span class="p">.</span><span class="nf">CreateField</span><span class="p">();</span>
+<span class="n">field</span><span class="p">.</span><span class="nf">ComputeField</span><span class="p">(</span><span class="n">baseVertex</span><span class="p">,</span> <span class="n">distances</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><strong>Advanced:</strong> The <code class="language-plaintext highlighter-rouge">SupplyRun</code> sample shows dual-solver swapping — pre-build both the
+“calm” and “flooded” graphs, then swap the active field in one line. Zero rebuild
+cost at runtime.</p>
+
+<hr />
+
+<h2 id="graph-adapters">Graph Adapters</h2>
+
+<p>PathForge ships with six adapters. Choose the one that matches your map.</p>
+
+<h3 id="gridgraphbuilder--tilemap-with-obstacles">GridGraphBuilder — Tilemap with Obstacles</h3>
+
+<p>The most common starting point. Your Tilemap has obstacle tiles (walls, water,
+cliffs). Empty cells are walkable.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 4-directional movement (up, down, left, right)</span>
+<span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">GridGraphBuilder</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">tilemap</span><span class="p">,</span> <span class="m">20u</span><span class="p">,</span> <span class="m">15u</span><span class="p">);</span>
+
+<span class="c1">// 8-directional movement (adds diagonals)</span>
+<span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">GridGraphBuilder</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">tilemap</span><span class="p">,</span> <span class="m">20u</span><span class="p">,</span> <span class="m">15u</span><span class="p">,</span> <span class="n">diagonal</span><span class="p">:</span> <span class="k">true</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p><strong>Convention:</strong> Tile present = blocked. Empty cell = walkable.</p>
+
+<p><strong>Diagonal mode:</strong> When enabled, diagonal moves cost 14 vs 10 for cardinal moves
+(an integer approximation of √2). Diagonals cannot cut through corners — both
+adjacent cardinal cells must be walkable.</p>
+
+<h3 id="tilemapgraphbuilder--tilemap-with-terrain-types">TilemapGraphBuilder — Tilemap with Terrain Types</h3>
+
+<p>Same as GridGraphBuilder but inverted convention: tile present = walkable. Supports
+per-tile weights (different movement costs for different terrain).</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">TilemapGraphBuilder</span><span class="p">(</span><span class="n">tilemap</span><span class="p">,</span> <span class="n">tilemap</span><span class="p">.</span><span class="n">cellBounds</span><span class="p">,</span> <span class="n">diagonal</span><span class="p">:</span> <span class="k">false</span><span class="p">);</span>
+<span class="n">builder</span><span class="p">.</span><span class="nf">SetTileWeight</span><span class="p">(</span><span class="n">sandTile</span><span class="p">,</span> <span class="m">3u</span><span class="p">);</span>  <span class="c1">// sand is 3× slower</span>
+<span class="n">builder</span><span class="p">.</span><span class="nf">SetTileWeight</span><span class="p">(</span><span class="n">roadTile</span><span class="p">,</span> <span class="m">1u</span><span class="p">);</span>  <span class="c1">// roads are fast</span>
+</code></pre></div></div>
+
+<h3 id="hexgraphbuilder--hexagonal-grids">HexGraphBuilder — Hexagonal Grids</h3>
+
+<p>For pointy-top hex grids (odd-row-offset layout, which Unity’s hex tilemaps use).</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Blocked cells defined by a predicate</span>
+<span class="n">Func</span><span class="p">&lt;</span><span class="kt">uint</span><span class="p">,</span> <span class="kt">uint</span><span class="p">,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">isBlocked</span> <span class="p">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="n">obstacleSet</span><span class="p">.</span><span class="nf">Contains</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">));</span>
+<span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">HexGraphBuilder</span><span class="p">(</span><span class="m">20u</span><span class="p">,</span> <span class="m">15u</span><span class="p">,</span> <span class="n">isBlocked</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Each hex connects to up to 6 neighbors. All edges have equal weight by default.</p>
+
+<h3 id="waypointgraphbuilder--sparse-navigation-points">WaypointGraphBuilder — Sparse Navigation Points</h3>
+
+<p>For games where movement happens along specific routes (highways, train lines,
+corridor systems).</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Transform</span><span class="p">[]</span> <span class="n">waypoints</span> <span class="p">=</span> <span class="n">FindObjectsOfType</span><span class="p">&lt;</span><span class="n">WaypointMarker</span><span class="p">&gt;()</span>
+    <span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">w</span> <span class="p">=&gt;</span> <span class="n">w</span><span class="p">.</span><span class="n">transform</span><span class="p">).</span><span class="nf">ToArray</span><span class="p">();</span>
+<span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">WaypointGraphBuilder</span><span class="p">(</span><span class="n">waypoints</span><span class="p">,</span> <span class="n">connectionDistance</span><span class="p">:</span> <span class="m">100f</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Waypoints within <code class="language-plaintext highlighter-rouge">connectionDistance</code> of each other are connected. Edge weight =
+Euclidean distance between waypoints.</p>
+
+<h3 id="meshgraphbuilder--triangle-mesh-navigation">MeshGraphBuilder — Triangle Mesh Navigation</h3>
+
+<p>For terrain meshes, custom surfaces, or any 3D geometry where agents walk on
+triangles. Each triangle is a navigation node; adjacent triangles (sharing an edge)
+are connected.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Mesh</span> <span class="n">terrainMesh</span> <span class="p">=</span> <span class="n">terrainMeshFilter</span><span class="p">.</span><span class="n">mesh</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">MeshGraphBuilder</span><span class="p">(</span><span class="n">terrainMesh</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">solver</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DnskSolver</span><span class="p">(</span><span class="n">builder</span><span class="p">.</span><span class="n">NumVertices</span><span class="p">);</span>
+<span class="n">solver</span><span class="p">.</span><span class="nf">BuildFrom</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">HeuristicMode</span><span class="p">.</span><span class="n">Dijkstra</span><span class="p">);</span> <span class="c1">// Dijkstra for meshes</span>
+</code></pre></div></div>
+
+<p><strong>Why Dijkstra?</strong> Landmark shortcuts need a grid-like structure. Triangle meshes
+don’t have that regularity, so landmarks provide no benefit.</p>
+
+<h3 id="navmeshgraphbuilder--unitys-baked-navmesh">NavMeshGraphBuilder — Unity’s Baked NavMesh</h3>
+
+<p>Same triangle-adjacency core as MeshGraphBuilder, but reads from Unity’s baked
+NavMesh. Use this when you already have a NavMesh and want PathForge’s performance.</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// All areas walkable</span>
+<span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">NavMeshGraphBuilder</span><span class="p">();</span>
+
+<span class="c1">// Exclude specific areas (e.g., block "Not Walkable" area)</span>
+<span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">NavMeshGraphBuilder</span><span class="p">(</span><span class="n">areaIndex</span> <span class="p">=&gt;</span> <span class="n">areaIndex</span> <span class="p">==</span> <span class="n">NavMeshArea</span><span class="p">.</span><span class="n">NotWalkable</span><span class="p">);</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="the-monobehaviour-shortcut">The MonoBehaviour Shortcut</h2>
+
+<p>For simple single-agent pathfinding, PathForge includes <code class="language-plaintext highlighter-rouge">DnskPathFollower</code> — a
+<code class="language-plaintext highlighter-rouge">MonoBehaviour</code> that handles path following automatically:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">follower</span> <span class="p">=</span> <span class="n">enemy</span><span class="p">.</span><span class="n">AddComponent</span><span class="p">&lt;</span><span class="n">DnskPathFollower</span><span class="p">&gt;();</span>
+<span class="n">follower</span><span class="p">.</span><span class="n">Solver</span> <span class="p">=</span> <span class="n">solver</span><span class="p">;</span>
+<span class="n">follower</span><span class="p">.</span><span class="n">StartVertex</span> <span class="p">=</span> <span class="n">startVertex</span><span class="p">;</span>
+<span class="n">follower</span><span class="p">.</span><span class="n">TargetVertex</span> <span class="p">=</span> <span class="n">targetVertex</span><span class="p">;</span>
+<span class="n">follower</span><span class="p">.</span><span class="n">MoveSpeed</span> <span class="p">=</span> <span class="m">5f</span><span class="p">;</span>            <span class="c1">// World units per second</span>
+<span class="n">follower</span><span class="p">.</span><span class="nf">SetVertexToWorld</span><span class="p">(</span><span class="n">builder</span><span class="p">.</span><span class="n">VertexToWorld</span><span class="p">);</span>
+<span class="n">follower</span><span class="p">.</span><span class="nf">StartPath</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>The follower computes the path and moves the agent frame-by-frame. Check
+<code class="language-plaintext highlighter-rouge">follower.IsFollowing</code> to see if it’s still moving, and <code class="language-plaintext highlighter-rouge">follower.PathRemaining</code>
+for steps left.</p>
+
+<hr />
+
+<h2 id="common-mistakes">Common Mistakes</h2>
+
+<h3 id="my-path-is-empty">“My path is empty”</h3>
+
+<p>Check <code class="language-plaintext highlighter-rouge">result.Reachable</code> first — if false, the target is blocked off. If true but
+<code class="language-plaintext highlighter-rouge">PathLength</code> is 0, the start and target are the same vertex. If <code class="language-plaintext highlighter-rouge">PathLength</code> is
+smaller than expected, your buffer might be too small (increase it to <code class="language-plaintext highlighter-rouge">cols × rows</code>).</p>
+
+<h3 id="nextstep-throws-an-exception-every-frame">“NextStep throws an exception every frame”</h3>
+
+<p><code class="language-plaintext highlighter-rouge">NextStep()</code> throws on blocked or unreachable vertices. In per-frame loops, check
+reachability before calling:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">uint</span> <span class="n">vertex</span> <span class="p">=</span> <span class="nf">GetAgentVertex</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">distances</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="p">!=</span> <span class="kt">uint</span><span class="p">.</span><span class="n">MaxValue</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">step</span> <span class="p">=</span> <span class="n">field</span><span class="p">.</span><span class="nf">NextStep</span><span class="p">(</span><span class="n">vertex</span><span class="p">);</span>
+    <span class="nf">MoveAgent</span><span class="p">(</span><span class="n">step</span><span class="p">.</span><span class="n">NextVertex</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// else: agent is on a blocked cell — teleport or skip</span>
+</code></pre></div></div>
+
+<p>This avoids exceptions entirely. If you can’t check distances, wrap in try/catch,
+but prefer the distance check — exceptions in hot loops are expensive.</p>
+
+<h3 id="agents-dont-move-after-i-change-the-map">“Agents don’t move after I change the map”</h3>
+
+<p>The field is stale. When you add or remove obstacles, you must rebuild the solver
+and recompute the field. There is no incremental update.</p>
+
+<h3 id="im-getting-gc-spikes">“I’m getting GC spikes”</h3>
+
+<p>You’re probably allocating <code class="language-plaintext highlighter-rouge">pathBuffer</code> inside a loop. Declare it as a field and
+reuse it:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// BAD — allocates every frame</span>
+<span class="k">void</span> <span class="nf">Update</span><span class="p">()</span> <span class="p">{</span> <span class="n">solver</span><span class="p">.</span><span class="nf">QueryPath</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="k">new</span> <span class="kt">uint</span><span class="p">[</span><span class="m">512</span><span class="p">]);</span> <span class="p">}</span>
+
+<span class="c1">// GOOD — one allocation, reused forever</span>
+<span class="kt">uint</span><span class="p">[]</span> <span class="n">buffer</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">uint</span><span class="p">[</span><span class="m">512</span><span class="p">];</span>
+<span class="k">void</span> <span class="nf">Update</span><span class="p">()</span> <span class="p">{</span> <span class="n">solver</span><span class="p">.</span><span class="nf">QueryPath</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">buffer</span><span class="p">);</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="the-plugin-wont-load">“The plugin won’t load”</h3>
+
+<p>Check <code class="language-plaintext highlighter-rouge">DnskNative.Available</code>. If false, call <code class="language-plaintext highlighter-rouge">DnskNative.Diagnose()</code> for details.
+Common causes: wrong platform binary, missing VC++ runtime (Windows), or the
+native library isn’t in the expected folder.</p>
+
+<hr />
+
+<h2 id="memory-and-cleanup">Memory and Cleanup</h2>
+
+<p>Always dispose your solver when the scene unloads:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">void</span> <span class="nf">OnDestroy</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">solver</span><span class="p">?.</span><span class="nf">Dispose</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Field handles (<code class="language-plaintext highlighter-rouge">DnskField</code>) share the solver’s memory — they don’t need separate
+disposal. When the solver is disposed, all its fields are freed too.</p>
+
+<hr />
+
+<h2 id="whats-next">What’s Next?</h2>
+
+<ul>
+  <li><strong><a href="API-Reference.html">API Reference</a></strong> — Complete method documentation, parameter
+details, return types, error table</li>
+  <li><strong><a href="BringYourGraph.html">Bring Your Graph</a></strong> — How to implement <code class="language-plaintext highlighter-rouge">IGraphSource</code> for
+custom graph structures (adjacency list, CSR, etc.)</li>
+  <li><strong><a href="FAQ.html">FAQ</a></strong> — Platform support, IL2CPP, mobile tips, deterministic
+multiplayer</li>
+  <li><strong>Samples</strong> — The <code class="language-plaintext highlighter-rouge">Samples~/</code> folder contains nine demos (BaseDemo, ColonySim,
+TowerDefense, etc.) that show each pattern in action with visuals</li>
+</ul>
+
+        
+        <nav class="prevnext" aria-label="Adjacent pages">
+          <span class="pn spacer"></span>
+          <a class="pn next" href="../docs/API-Reference.html"><span class="lbl">Next</span><span class="pg">API Reference</span></a>
+        </nav>
+        
+      </article>
+      <aside class="doc-rail" aria-label="Documentation">
+        <p class="grp">Documentation</p>
+        <nav>
+          
+            <a href="../docs/GettingStarted.html" class="active" aria-current="page">Getting Started</a>
+          
+            <a href="../docs/API-Reference.html">API Reference</a>
+          
+            <a href="../docs/BringYourGraph.html">Bring Your Graph</a>
+          
+            <a href="../docs/Troubleshooting.html">Troubleshooting</a>
+          
+            <a href="../docs/FAQ.html">FAQ</a>
+          
+            <a href="../LICENSE.html">License</a>
+          
+            <a href="../Third%20Party%20Notices.html">Third Party Notices</a>
+          
+        </nav>
+        <p class="grp" id="onpage-grp">On this page</p>
+        <nav id="onpage" class="onpage" aria-label="On this page"></nav>
+      </aside>
+    </div>
+    
+  </main>
+
+  <footer>
+  <div class="wrap frow">
+    <div>
+      <div class="fbrand">PathForge by Birdblu GmbH</div>
+      <div class="fcopy">© 2026 Birdblu GmbH</div>
+    </div>
+    <nav class="flinks" aria-label="Legal">
+      <a href="../index.html#impressum">Impressum</a>
+      <a href="../LICENSE.html">License</a>
+    </nav>
+  </div>
+</footer>
+
+
+  
+  <script>
+  (function () {
+    var content = document.querySelector('.doc-content');
+    var rail = document.getElementById('onpage');
+    if (!content || !rail) return;
+    var heads = content.querySelectorAll('h2, h3');
+    var list = [];
+    heads.forEach(function (h) {
+      if (!h.id) return;
+      var a = document.createElement('a');
+      a.className = 'toc' + (h.tagName === 'H3' ? ' sub' : '');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent;
+      rail.appendChild(a);
+      list.push({ h: h, a: a });
+    });
+    if (!list.length) {
+      var g = document.getElementById('onpage-grp');
+      if (g) g.style.display = 'none';
+      rail.style.display = 'none';
+      return;
+    }
+    function onScroll() {
+      var y = window.scrollY + 100;
+      var cur = list[0];
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].h.offsetTop <= y) cur = list[i];
+      }
+      list.forEach(function (it) { it.a.classList.remove('active'); });
+      if (cur) cur.a.classList.add('active');
+    }
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { onScroll(); }
+    else {
+      var ticking = false;
+      window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(function () { onScroll(); ticking = false; }); }
+      }, { passive: true });
+      onScroll();
+    }
+  })();
+  </script>
+  
+</body>
+</html>

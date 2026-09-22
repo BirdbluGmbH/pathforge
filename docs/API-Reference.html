@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Reference</title>
+<meta name="description" content="API Reference — PathForge documentation.">
+<style>
+/*
+  PathForge — single site stylesheet (Travertine Navy).
+  One file styles the landing AND the documentation: same tokens, same header,
+  same footer, same visual rhythm. Included by the default layout.
+  No external assets — works on any static host.
+  NOTE: keep this file free of Liquid tags; Jekyll processes includes, so a
+  stray liquid tag here would re-run this include.
+*/
+:root{
+  --canvas:#F2EEE5; --surface:#FBF8F2; --surface-soft:#EAE4D9;
+  --ink:#1D2630; --muted:#4E4842;
+  --primary:#42576D; --primary-hover:#3D5165; --primary-pressed:#394B5E; --on-primary:#FFFFFF;
+  --accent:#9C7F5A; --on-accent:#141B23;
+  --line:#D7CEC1; --control-border:#837D75;
+  --badge:#EBE3D7; --on-badge:#1D2630; --badge-border:#D7CEC1;
+  --inverse-bg:#1D2630; --inverse-text:#FBF8F2; --inverse-muted:#DDDCD8;
+  --link:#394B5F; --selected:#E5E5E3;
+  --font-ui:system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-serif:Georgia,"Times New Roman",serif;
+  --font-mono:ui-monospace,"SFMono-Regular",Consolas,monospace;
+  --maxw:960px; --e1:0 2px 6px rgb(24 35 46/.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--canvas);color:var(--ink);
+  font:16px/1.5 var(--font-ui);-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:underline;text-decoration-thickness:1px;
+  text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+a:focus-visible{outline:3px solid var(--primary);outline-offset:3px}
+::selection{background:var(--primary);color:var(--on-primary)}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+.skip-link{position:absolute;left:-9999px;top:0;z-index:20;background:var(--surface);
+  color:var(--ink);padding:10px 16px;border:1px solid var(--control-border);border-radius:10px}
+.skip-link:focus{left:16px;top:12px}
+
+/* ---- Shared header (top navigation) ---- */
+header{position:sticky;top:0;z-index:10;background:rgba(242,238,229,.85);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{max-width:var(--maxw);margin:0 auto;padding:0 20px;min-height:72px;
+  display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.brand{display:inline-flex;align-items:center;gap:10px;font-size:18px;font-weight:700;
+  color:var(--ink);text-decoration:none}
+.links{margin-left:auto;display:flex;gap:20px;font-size:15px;font-weight:600;flex-wrap:wrap}
+.links a{color:var(--ink);text-decoration:none}
+.links a:hover{color:var(--primary)}
+.links a.active{color:var(--primary);box-shadow:inset 0 -2px 0 var(--accent)}
+
+/* ---- Dark editorial band — the one navy field of the page (hero) ---- */
+.hero-band{background:var(--inverse-bg)}
+.hero-band a:focus-visible{outline-color:var(--inverse-text)}
+.hero{padding:96px 0 80px}
+.hero .eyebrow{margin:0 0 20px;font-family:var(--font-ui);font-size:14px;
+  font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--inverse-muted)}
+.hero h1{margin:0 0 24px;font-family:var(--font-serif);font-weight:400;
+  font-size:clamp(40px,4.5vw,72px);line-height:1.05;letter-spacing:-.035em;
+  color:var(--inverse-text)}
+.hero h1 .accent{color:var(--accent)}
+.hero .lede{margin:0 0 32px;max-width:640px;font-family:var(--font-serif);
+  font-size:18px;line-height:1.7;color:var(--inverse-muted)}
+
+/* ---- Buttons + chips ---- */
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;
+  padding:0 20px;border-radius:10px;border:1px solid transparent;
+  font-family:var(--font-ui);font-size:15px;font-weight:600;line-height:20px;
+  text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.btn.primary:hover{background:var(--primary-hover);border-color:var(--primary-hover);
+  text-decoration:none}
+.btn.primary:active{background:var(--primary-pressed);border-color:var(--primary-pressed)}
+.btn.secondary{background:var(--surface);border-color:var(--control-border);color:var(--ink)}
+.btn.secondary:hover{background:var(--selected);border-color:var(--control-border);
+  color:var(--ink);text-decoration:none}
+.btn.secondary:active{box-shadow:inset 0 0 0 2px var(--control-border)}
+.btn.dark-ghost{background:transparent;border-color:var(--inverse-muted);
+  color:var(--inverse-text)}
+.btn.dark-ghost:hover{background:var(--surface);border-color:var(--surface);
+  color:var(--ink);text-decoration:none}
+.chips{margin-top:24px}
+.chip{display:inline-flex;align-items:center;min-height:28px;padding:2px 12px;
+  border-radius:999px;background:var(--badge);border:1px solid var(--badge-border);
+  color:var(--on-badge);font-size:13px;font-weight:600;margin:0 8px 8px 0}
+
+/* ---- Landing content sections ---- */
+section{padding:64px 0;scroll-margin-top:84px}
+section + section{border-top:1px solid var(--line)}
+h2{margin:0 0 8px;font-family:var(--font-serif);font-weight:700;font-size:36px;
+  line-height:1.2;letter-spacing:-.03em;color:var(--ink)}
+.sub{margin:0 0 32px;max-width:640px;font-size:18px;line-height:1.7;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.lang{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;
+  padding:24px}
+.card h3{margin:0 0 8px;font-size:20px;line-height:1.3;font-weight:700;
+  letter-spacing:-.015em;color:var(--ink)}
+.card p{margin:0;font-size:16px;line-height:1.5;color:var(--muted)}
+.ic{display:block;width:24px;height:24px;margin-bottom:12px}
+.card.pro{border-color:var(--accent)}
+.card .desc{margin-top:12px}
+.table-wrap{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:12px 16px;background:var(--surface-soft);font-size:14px;
+  line-height:20px;font-weight:600;color:var(--ink)}
+td{padding:14px 16px;border-top:1px solid var(--line);line-height:22px;color:var(--ink)}
+.note{margin:14px 0 0;font-size:14px;line-height:20px;color:var(--muted)}
+code{padding:2px 6px;border:1px solid var(--line);border-radius:6px;
+  background:var(--surface-soft);font-family:var(--font-mono);font-size:14px;
+  color:var(--ink)}
+pre.code{margin:16px 0 0;padding:18px 20px;border:1px solid var(--line);
+  border-left:4px solid var(--accent);border-radius:12px;background:var(--inverse-bg);
+  overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;
+  color:var(--inverse-text)}
+pre.code code{border:0;background:none;padding:0;color:inherit;font-size:inherit}
+pre.code .c{color:var(--inverse-muted)}
+.docs-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.docs-list a{display:block;padding:16px 18px;border:1px solid var(--line);
+  border-radius:16px;background:var(--surface);color:var(--ink);text-decoration:none}
+.docs-list a:hover{border-color:var(--primary);box-shadow:var(--e1)}
+.docs-list a .t{display:block;font-size:16px;line-height:1.375;font-weight:700}
+.docs-list a .d{display:block;margin-top:4px;font-size:14px;line-height:1.5;
+  color:var(--muted)}
+
+/* ---- Shared footer ---- */
+footer{border-top:1px solid var(--line);padding:32px 0 40px;font-size:14px;
+  line-height:1.5;color:var(--muted)}
+footer .frow{display:flex;align-items:flex-start;justify-content:space-between;
+  gap:24px;flex-wrap:wrap}
+footer .fbrand{font-size:15px;font-weight:600;color:var(--ink)}
+footer .fcopy{margin-top:6px}
+footer .flinks{display:flex;gap:20px}
+footer .flinks a{color:var(--muted);text-decoration:none}
+footer .flinks a:hover{color:var(--primary)}
+
+/* ======================================================================
+   DOCUMENTATION — same shell, reading column + a slim navigation rail.
+   Scoped under .doc-grid / .doc-content so it never fights the landing.
+   ====================================================================== */
+/* One shared frame: the doc grid uses the SAME --maxw as the landing's header,
+   footer and sections, so every page's outer edges align — "one page, one design". */
+.doc-grid{max-width:var(--maxw);margin:0 auto;padding:0 20px;display:grid;
+  grid-template-columns:minmax(0,1fr) 248px;column-gap:36px}
+.doc-content{padding:40px 0 96px;width:100%}
+.doc-content h1{font-family:var(--font-serif);font-weight:700;font-size:40px;
+  line-height:1.15;letter-spacing:-.02em;margin:0 0 12px;color:var(--ink)}
+.doc-content .lead{font-size:18px;color:var(--muted);line-height:1.7}
+/* doc H2 matches the landing's section H2 (36px) — one heading scale site-wide. */
+.doc-content h2{font-family:var(--font-serif);font-weight:700;font-size:36px;
+  line-height:1.2;letter-spacing:-.03em;margin:48px 0 14px;padding-top:20px;
+  border-top:1px solid var(--line);color:var(--ink);scroll-margin-top:84px}
+.doc-content h3{font-family:var(--font-ui);font-weight:700;font-size:20px;
+  margin:30px 0 10px;color:var(--ink);scroll-margin-top:84px}
+.doc-content h4{font-size:16px;margin:22px 0 8px;color:var(--ink);scroll-margin-top:84px}
+.doc-content p{margin:0 0 15px;line-height:1.65}
+.doc-content ul,.doc-content ol{margin:0 0 16px;padding-left:24px;line-height:1.65}
+.doc-content li{margin:5px 0}
+.doc-content li>ul,.doc-content li>ol{margin:5px 0 5px}
+.doc-content blockquote{margin:0 0 16px;padding:4px 18px;
+  border-left:4px solid var(--accent);background:var(--surface);color:var(--muted);
+  border-radius:0 10px 10px 0}
+.doc-content blockquote p:last-child{margin-bottom:0}
+.doc-content hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+.doc-content .table-wrap{margin:0 0 18px}
+.doc-content table{margin:0 0 4px}
+.doc-content code{font-size:13.5px}
+.doc-content pre{margin:0 0 18px;padding:16px 18px;border:1px solid var(--line);
+  border-left:4px solid var(--accent);border-radius:12px;background:var(--inverse-bg);
+  overflow-x:auto}
+.doc-content pre code{border:0;background:none;padding:0;color:var(--inverse-text);
+  font-size:13.5px;line-height:1.6;white-space:pre}
+
+/* Slim light rail (doc list + "On this page"): sits on the same --canvas as the
+   article, separated only by the grid column-gap — NOT a full-height --surface
+   panel (that full-bleed surface column is the main "separate app" tell). */
+.doc-rail{position:sticky;top:72px;align-self:start;max-height:calc(100vh - 72px);
+  overflow-y:auto;padding:40px 4px 40px;font-size:14px}
+.doc-rail .grp{font-size:11.5px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.doc-rail .grp:not(:first-child){margin-top:22px}
+.doc-rail a{display:block;padding:6px 10px;border-radius:8px;color:var(--ink);
+  text-decoration:none;margin-bottom:1px;line-height:1.35}
+.doc-rail a:hover{background:var(--surface-soft);text-decoration:none}
+/* active = 3px start-edge + light selected fill (guide §7.1), not a solid navy pill */
+.doc-rail a.active{background:var(--selected);color:var(--ink);font-weight:600;
+  box-shadow:inset 3px 0 0 var(--primary)}
+.doc-rail a.toc{padding-left:20px;font-size:13px;color:var(--muted)}
+.doc-rail a.toc.sub{padding-left:34px;font-size:12.5px}
+.doc-rail a.toc:hover{color:var(--ink)}
+.doc-rail a.toc.active{background:var(--selected);color:var(--ink);
+  box-shadow:inset 3px 0 0 var(--accent)}
+
+/* prev/next pagination under a doc article */
+.prevnext{display:flex;gap:14px;margin-top:56px;padding-top:24px;
+  border-top:1px solid var(--line)}
+.pn{flex:1;display:flex;flex-direction:column;gap:4px;padding:14px 16px;
+  border:1px solid var(--line);border-radius:14px;background:var(--surface);
+  text-decoration:none;color:var(--ink)}
+.pn:hover{border-color:var(--primary);box-shadow:var(--e1);text-decoration:none}
+.pn .lbl{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted)}
+.pn .pg{font-size:15px;font-weight:600}
+.pn.next{text-align:right;align-items:flex-end}
+.pn.spacer{visibility:hidden}
+
+/* Mobile: rail becomes a top block; content full width. */
+@media (max-width:960px){
+  .doc-grid{grid-template-columns:1fr;column-gap:0}
+  .doc-rail{position:static;max-height:none;padding:8px 0 24px;
+    border-bottom:1px solid var(--line);margin-bottom:8px}
+  .doc-rail .grp:not(:first-child){margin-top:16px}
+  .doc-content{padding:28px 0 64px}
+  .hero{padding:64px 0 48px}
+  section{padding:40px 0}
+  .nav{gap:16px}
+  .links{gap:16px}
+  h2{font-size:28.8px;line-height:1.2}
+  .card{padding:16px}
+}
+
+</style>
+
+</head>
+<body id="top"><a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="nav">
+    <a class="brand" href="../">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3.4" y="3.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="10.4" y="3.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="17.4" y="3.4" width="3.2" height="3.2" rx="1" fill="#9C7F5A"/>
+        <rect x="3.4" y="10.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="10.4" y="10.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="17.4" y="10.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="3.4" y="17.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <rect x="10.4" y="17.4" width="3.2" height="3.2" rx="1" fill="#42576D"/>
+        <path d="M5 19 L12 19 L12 12 L19 12 L19 5" stroke="#42576D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      PathForge
+    </a>
+    <nav class="links" aria-label="Main">
+      <a href="../index.html#quickstart">Quick start</a>
+      <a href="../index.html#why">Why</a>
+      <a href="../index.html#platforms">Platforms</a>
+      <a href="../index.html#tiers">Tiers</a>
+      <a href="../docs/index.html" class="active" aria-current="page">Docs</a>
+      <a href="https://github.com/BirdbluGmbH/pathforge/issues">Support</a>
+      <a href="../index.html#impressum">Impressum</a>
+    </nav>
+  </div>
+</header>
+
+
+  <main id="main">
+    <div class="doc-grid">
+      <article class="doc-content">
+        <h1 id="pathforge--api-reference">PathForge — API Reference</h1>
+
+<blockquote>
+  <p>Complete method and type reference. For tutorials, patterns, and game-specific examples, see <a href="GettingStarted.html">Getting Started</a>.</p>
+</blockquote>
+
+<hr />
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<ul>
+  <li>Unity 6 (6000.0 or later)</li>
+  <li>C# 9.0 / .NET Standard 2.1 (Unity 6 baseline)</li>
+  <li>Native plugin included for your platform</li>
+</ul>
+
+<h3 id="supported-platforms">Supported Platforms</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Platform</th>
+      <th>Plugin</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Windows x86_64</td>
+      <td><code class="language-plaintext highlighter-rouge">dnsk_ffi.dll</code></td>
+      <td>Included</td>
+    </tr>
+    <tr>
+      <td>Linux x86_64</td>
+      <td><code class="language-plaintext highlighter-rouge">libdnsk_ffi.so</code></td>
+      <td>Included</td>
+    </tr>
+    <tr>
+      <td>Linux ARM64</td>
+      <td><code class="language-plaintext highlighter-rouge">libdnsk_ffi.aarch64.so</code></td>
+      <td>Included</td>
+    </tr>
+    <tr>
+      <td>macOS x86_64</td>
+      <td><code class="language-plaintext highlighter-rouge">libdnsk_ffi.x86_64.dylib</code></td>
+      <td>Included</td>
+    </tr>
+    <tr>
+      <td>macOS ARM64 (Apple Silicon)</td>
+      <td><code class="language-plaintext highlighter-rouge">libdnsk_ffi.arm64.dylib</code></td>
+      <td>Included</td>
+    </tr>
+    <tr>
+      <td>Android ARM64</td>
+      <td><code class="language-plaintext highlighter-rouge">libdnsk_ffi.so</code></td>
+      <td>Included</td>
+    </tr>
+    <tr>
+      <td>iOS</td>
+      <td>—</td>
+      <td>Not supported</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Not included: Windows 32-bit, Windows ARM64, iOS, WebGL. See
+<a href="Troubleshooting.html">Troubleshooting</a> for plugin-loading issues on each platform.</p>
+
+<p><strong>Mono and IL2CPP:</strong> compatible with both script backends — all FFI types are
+blittable, no <code class="language-plaintext highlighter-rouge">Reflection.Emit</code>.</p>
+
+<h3 id="package-import">Package Import</h3>
+
+<p>Import via Package Manager or by placing the package folder in <code class="language-plaintext highlighter-rouge">Packages/</code>. The native
+plugin loads automatically — no setup required.</p>
+
+<hr />
+
+<h2 id="dnsksolver">DnskSolver</h2>
+
+<p>Main entry point. Owns one graph in native memory. Implements <code class="language-plaintext highlighter-rouge">IDisposable</code>.</p>
+
+<h3 id="constructors">Constructors</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Signature</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">DnskSolver(uint numVertices)</code></td>
+      <td>Create solver for N vertices. Checks the native plugin’s version on construction — throws <code class="language-plaintext highlighter-rouge">InvalidOperationException</code> on mismatch.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="methods">Methods</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">AddEdges(uint[] sources, uint[] targets, uint[] weights)</code></td>
+      <td>Add directed edges. All three arrays must be same length. Must be called before <code class="language-plaintext highlighter-rouge">Build()</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Build(HeuristicMode mode)</code></td>
+      <td>Finalize graph and build internal structures. Can only be called once. Default: <code class="language-plaintext highlighter-rouge">HeuristicMode.Landmarks</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">BuildFrom(IGraphSource source, HeuristicMode mode)</code></td>
+      <td>Convenience: calls <code class="language-plaintext highlighter-rouge">AddEdges</code> + <code class="language-plaintext highlighter-rouge">Build</code> using the provided <code class="language-plaintext highlighter-rouge">IGraphSource</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">QueryPath(uint source, uint target, uint[] pathBuffer)</code></td>
+      <td>Single-agent path query. Writes path vertices into <code class="language-plaintext highlighter-rouge">pathBuffer</code>. Returns <code class="language-plaintext highlighter-rouge">PathResult</code>. Zero managed allocations.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">CreateField()</code></td>
+      <td>Create a <code class="language-plaintext highlighter-rouge">DnskField</code> handle for field operations. Requires <code class="language-plaintext highlighter-rouge">Build()</code> to have been called.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Dispose()</code></td>
+      <td>Release native memory. Call in <code class="language-plaintext highlighter-rouge">OnDestroy()</code>. After disposal, all operations throw <code class="language-plaintext highlighter-rouge">ObjectDisposedException</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="properties">Properties</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GraphVersion</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint</code></td>
+      <td>Monotonic version number. Use for cache invalidation.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="dnskfield--pro">DnskField  <em>(Pro)</em></h2>
+
+<p>Field operations on a built solver. Created via <code class="language-plaintext highlighter-rouge">solver.CreateField()</code>. Does not need separate disposal — shares the solver’s native memory.</p>
+
+<blockquote>
+  <p><strong>Pro only.</strong> <code class="language-plaintext highlighter-rouge">DnskField</code> and every method below bind to the <code class="language-plaintext highlighter-rouge">dnsk_ffi_pro</code> native
+module, which only the <strong>PathForge Pro</strong> package installs. On a Base-only install,
+calling any of these throws <code class="language-plaintext highlighter-rouge">DnskProRequiredException</code> (a clear “install Pro” message,
+not a cryptic P/Invoke error). Single-query routing (<code class="language-plaintext highlighter-rouge">DnskSolver.QueryPath</code>) works on
+Base.</p>
+</blockquote>
+
+<h3 id="methods-1">Methods</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ComputeField(uint target, uint[] distancesOut, bool[]? exploredOut = null)</code></td>
+      <td>Single-target reverse field. <code class="language-plaintext highlighter-rouge">distancesOut[v]</code> = distance from <code class="language-plaintext highlighter-rouge">v</code> to target. <code class="language-plaintext highlighter-rouge">uint.MaxValue</code> = unreachable. Optional <code class="language-plaintext highlighter-rouge">exploredOut</code> bitmap marks reachable cells.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ComputeWeightedField(uint[] targets, uint[]? costs, uint[] distancesOut, uint[] rootsOut)</code></td>
+      <td>Multi-target Voronoi field. <code class="language-plaintext highlighter-rouge">rootsOut[v]</code> = vertex ID of nearest target. Optional <code class="language-plaintext highlighter-rouge">costs</code> array (one per target) weights targets differently. Pass <code class="language-plaintext highlighter-rouge">null</code> for equal weights.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ComputeFieldWatched(uint target, byte[] watchedBitmap, uint watchedLeft, uint[] distancesOut)</code></td>
+      <td>Partial field with early termination. <code class="language-plaintext highlighter-rouge">watchedBitmap</code> is indexed by vertex ID (set <code class="language-plaintext highlighter-rouge">1</code> for watched vertices). <code class="language-plaintext highlighter-rouge">watchedLeft</code> is the count of watched vertices still unreached. Flood stops when <code class="language-plaintext highlighter-rouge">watchedLeft</code> reaches 0. Pass <code class="language-plaintext highlighter-rouge">null</code> bitmap with <code class="language-plaintext highlighter-rouge">watchedLeft = 0</code> for a full flood.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">NextStep(uint vertex)</code></td>
+      <td>Return next vertex toward target from computed field. Returns <code class="language-plaintext highlighter-rouge">FieldStep</code>. Throws <code class="language-plaintext highlighter-rouge">InvalidOperationException</code> on blocked/unreachable vertices.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">BatchNextStep(uint[] vertices, uint[] nextOut, bool[] terminalOut)</code></td>
+      <td>Batch next-step for multiple vertices. All three arrays must have same length. Returns count of valid results. Unreachable/blocked vertices are silently skipped. Single FFI call.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">ExtractPath(uint start, uint[] pathBuffer, uint maxSteps)</code></td>
+      <td>Extract full path from <code class="language-plaintext highlighter-rouge">start</code> vertex to target via field. Returns actual number of vertices written into <code class="language-plaintext highlighter-rouge">pathBuffer</code>. <code class="language-plaintext highlighter-rouge">maxSteps</code> caps the path length.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Root(uint vertex)</code></td>
+      <td>Which target vertex this cell belongs to. Only valid after <code class="language-plaintext highlighter-rouge">ComputeWeightedField()</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">BatchQuery(uint[] sources, uint[] targets, uint[] distancesOut, uint[]? rootsOut)</code></td>
+      <td>Batch distance queries for source-target pairs. All arrays must have same length. Optional <code class="language-plaintext highlighter-rouge">rootsOut</code> returns nearest target per pair.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="heuristicmode">HeuristicMode</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Dijkstra</code></td>
+      <td>Plain Dijkstra. Use for mesh/NavMesh graphs or small grids.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Landmarks</code></td>
+      <td>Landmark-based heuristic. Use for grid/hex graphs — typically the fastest option on regular layouts.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="pathresult">PathResult</h2>
+
+<p>Returned by <code class="language-plaintext highlighter-rouge">DnskSolver.QueryPath()</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Distance</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint</code></td>
+      <td>Total path cost (sum of edge weights). <code class="language-plaintext highlighter-rouge">uint.MaxValue</code> if target is unreachable.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">PathLength</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int</code></td>
+      <td>Number of vertices written into the path buffer (including source and target).</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Reachable</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> if a path exists from source to target.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="fieldstep">FieldStep</h2>
+
+<p>Returned by <code class="language-plaintext highlighter-rouge">DnskField.NextStep()</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">NextVertex</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint</code></td>
+      <td>The next vertex on the path toward the target.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">IsTerminal</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> if the current vertex IS the target (no further steps needed).</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="igraphsource">IGraphSource</h2>
+
+<p>Interface for providing graph data to the solver. Engine-free (no <code class="language-plaintext highlighter-rouge">UnityEngine</code> dependencies).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Member</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">NumVertices</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint</code></td>
+      <td>Total vertex count. Vertex IDs are 0 to <code class="language-plaintext highlighter-rouge">NumVertices - 1</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">NumEdges</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint</code></td>
+      <td>Total directed edge count.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">FillEdges(uint[] sources, uint[] targets, uint[] weights)</code></td>
+      <td><code class="language-plaintext highlighter-rouge">void</code></td>
+      <td>Write edge data into pre-allocated arrays. Each undirected connection should be emitted as two directed edges (forward + reverse). All three arrays have length <code class="language-plaintext highlighter-rouge">NumEdges</code>.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">IsBlocked(uint vertex)</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td>Whether a vertex is impassable. Used by utility classes, not the solver core.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="graph-builder-adapters">Graph Builder Adapters</h2>
+
+<p>All implement <code class="language-plaintext highlighter-rouge">IGraphSource</code>.</p>
+
+<h3 id="gridgraphbuilder">GridGraphBuilder</h3>
+
+<p>Tilemap adapter. <strong>Tile present = blocked.</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Constructor</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GridGraphBuilder(Grid grid, Tilemap tilemap)</code></td>
+      <td>Auto-size from <code class="language-plaintext highlighter-rouge">tilemap.cellBounds</code>. 4-connectivity.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GridGraphBuilder(Grid grid, Tilemap tilemap, uint cols, uint rows)</code></td>
+      <td>Explicit size. 4-connectivity.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GridGraphBuilder(Grid grid, Tilemap tilemap, uint cols, uint rows, bool diagonal)</code></td>
+      <td>Explicit size. <code class="language-plaintext highlighter-rouge">diagonal: true</code> = 8-connectivity (cardinals weight 10, diagonals 14, corner-cutting guarded).</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">VertexToWorld(uint vertex)</code></td>
+      <td>Convert vertex ID to world-space cell center.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="tilemapgraphbuilder">TilemapGraphBuilder</h3>
+
+<p>Tilemap adapter. <strong>Tile present = walkable.</strong> Supports per-tile weights.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Constructor</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">TilemapGraphBuilder(Tilemap tilemap)</code></td>
+      <td>Auto-bounds. 4-connectivity.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">TilemapGraphBuilder(Tilemap tilemap, BoundsInt bounds, bool diagonal)</code></td>
+      <td>Explicit bounds. Optional 8-connectivity.</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetTileWeight(TileBase tile, uint weight)</code></td>
+      <td>Set movement cost multiplier for a tile type.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="hexgraphbuilder">HexGraphBuilder</h3>
+
+<p>Pointy-top hex grid (odd-row-offset).</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Constructor</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">HexGraphBuilder(uint cols, uint rows, Func&lt;uint,uint,bool&gt; blocked, float cellWidth, float rowHeight)</code></td>
+      <td>Predicate-based blocked check. Default cell dimensions: <code class="language-plaintext highlighter-rouge">1.0</code> width, <code class="language-plaintext highlighter-rouge">0.866</code> row height (regular unit hexes).</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">HexToWorld(uint vertex)</code></td>
+      <td>Convert vertex ID to world-space hex center.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="waypointgraphbuilder">WaypointGraphBuilder</h3>
+
+<p>Fully connected graph from Transform array.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Constructor</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">WaypointGraphBuilder(Transform[] waypoints)</code></td>
+      <td>Default connection distance: 100 units.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">WaypointGraphBuilder(Transform[] waypoints, float connectionDistance)</code></td>
+      <td>Waypoints within <code class="language-plaintext highlighter-rouge">connectionDistance</code> are connected. Edge weight = Euclidean distance.</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">VertexToWorld(uint vertex)</code></td>
+      <td>Return world position of waypoint at given index.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="meshgraphbuilder">MeshGraphBuilder</h3>
+
+<p>Triangle-adjacency graph from a Unity <code class="language-plaintext highlighter-rouge">Mesh</code>. Each triangle is a vertex.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Constructor</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">MeshGraphBuilder(Mesh mesh)</code></td>
+      <td>All triangles walkable.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">MeshGraphBuilder(Mesh mesh, Func&lt;int,bool&gt;? triangleBlocked)</code></td>
+      <td>Predicate: triangle index → blocked.</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">TriangleCentroid(uint vertex)</code></td>
+      <td>Return mesh-local centroid of triangle. Transform by the mesh object’s transform for world space.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="navmeshgraphbuilder">NavMeshGraphBuilder</h3>
+
+<p>Triangle-adjacency graph from Unity’s baked NavMesh.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Constructor</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">NavMeshGraphBuilder()</code></td>
+      <td>All NavMesh areas walkable.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">NavMeshGraphBuilder(Func&lt;int,bool&gt;? areaBlocked)</code></td>
+      <td>Predicate: NavMesh area index → blocked.</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">TriangleCentroid(uint vertex)</code></td>
+      <td>Return world-space centroid of NavMesh triangle.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="unity-helpers">Unity Helpers</h2>
+
+<h3 id="dnskpathfollower">DnskPathFollower</h3>
+
+<p><code class="language-plaintext highlighter-rouge">MonoBehaviour</code> for frame-by-frame path following via <code class="language-plaintext highlighter-rouge">QueryPath</code>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Solver</code></td>
+      <td><code class="language-plaintext highlighter-rouge">DnskSolver</code></td>
+      <td>Reference to the solver.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">StartVertex</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint</code></td>
+      <td>Starting vertex ID.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">TargetVertex</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint</code></td>
+      <td>Destination vertex ID.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">MoveSpeed</code></td>
+      <td><code class="language-plaintext highlighter-rouge">float</code></td>
+      <td>World units per second. Default: 5.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">IsFollowing</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> while agent is moving along a path.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">PathRemaining</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int</code></td>
+      <td>Steps left in current path.</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">StartPath()</code></td>
+      <td>Compute path and begin following.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">StartPath(uint startVertex)</code></td>
+      <td>Compute path from a specific vertex.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">SetVertexToWorld(Func&lt;uint,Vector3&gt; converter)</code></td>
+      <td>Set custom vertex-to-world converter (required for grid builders).</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="dnskfieldcache--pro">DnskFieldCache  <em>(Pro)</em></h3>
+
+<p>Caches computed fields keyed by <code class="language-plaintext highlighter-rouge">(target, graphVersion, mode)</code>. <strong>Pro only</strong> — it wraps
+<code class="language-plaintext highlighter-rouge">DnskField</code>, so it requires the PathForge Pro package.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GetOrCompute(FieldSignature sig, Func&lt;FieldSignature,FieldData&gt; compute)</code></td>
+      <td>Return cached field or compute and cache.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Invalidate()</code></td>
+      <td>Clear all cached fields.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">IncrementGraphVersion()</code></td>
+      <td>Increment version and clear cache.</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">HitCount</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int</code></td>
+      <td>Cache hit count.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">MissCount</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int</code></td>
+      <td>Cache miss count.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GraphVersion</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint</code></td>
+      <td>Current cached graph version.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="fieldsignature">FieldSignature</h3>
+
+<p>Cache key struct.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Target</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint</code></td>
+      <td>Target vertex ID.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GraphVersion</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint</code></td>
+      <td>Solver graph version.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Mode</code></td>
+      <td><code class="language-plaintext highlighter-rouge">HeuristicMode</code></td>
+      <td>Heuristic mode used.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="fielddata">FieldData</h3>
+
+<p>Cached field result struct.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Distances</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint[]</code></td>
+      <td>Distance array.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Roots</code></td>
+      <td><code class="language-plaintext highlighter-rouge">uint[]</code></td>
+      <td>Root array (weighted field).</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="dnsknative">DnskNative</h3>
+
+<p>Static diagnostics for the native plugin layer.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Member</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Available</code></td>
+      <td><code class="language-plaintext highlighter-rouge">bool</code></td>
+      <td><code class="language-plaintext highlighter-rouge">true</code> if the native plugin loaded and ABI version matches.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">LoadError</code></td>
+      <td><code class="language-plaintext highlighter-rouge">string?</code></td>
+      <td>Human-readable load failure reason. <code class="language-plaintext highlighter-rouge">null</code> if loaded.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">OK</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int</code></td>
+      <td>FFI status code: success (0).</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">InvalidInput</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int</code></td>
+      <td>FFI status code: invalid input (1).</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Panic</code></td>
+      <td><code class="language-plaintext highlighter-rouge">int</code></td>
+      <td>FFI status code: Rust panic (2).</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Diagnose()</code></td>
+      <td>Return detailed diagnostic string (probed paths, load status, Win32 error codes).</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="lifecycle--error-handling">Lifecycle &amp; Error Handling</h2>
+
+<h3 id="solver-lifecycle">Solver Lifecycle</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>new DnskSolver(N) → AddEdges() → Build() → [QueryPath() | CreateField()] → Dispose()
+</code></pre></div></div>
+
+<ul>
+  <li>The solver <strong>must</strong> be disposed. Call <code class="language-plaintext highlighter-rouge">Dispose()</code> in <code class="language-plaintext highlighter-rouge">OnDestroy()</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">Build()</code> can only be called once. Create a new solver for graph changes.</li>
+  <li><code class="language-plaintext highlighter-rouge">CreateField()</code> requires <code class="language-plaintext highlighter-rouge">Build()</code> to have been called.</li>
+  <li>Field handles share the solver’s native memory — they do NOT need separate disposal.</li>
+</ul>
+
+<h3 id="native-plugin-loading">Native Plugin Loading</h3>
+
+<p>The native plugin loads automatically before the first scene load — no setup
+required. If it does not load, see <a href="Troubleshooting.html">Troubleshooting</a>.</p>
+
+<h3 id="error-table">Error Table</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Situation</th>
+      <th>Behavior</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>No path exists</td>
+      <td><code class="language-plaintext highlighter-rouge">QueryPath</code> returns <code class="language-plaintext highlighter-rouge">PathResult.Reachable = false</code>, <code class="language-plaintext highlighter-rouge">Distance = uint.MaxValue</code></td>
+    </tr>
+    <tr>
+      <td>Native call fails</td>
+      <td><code class="language-plaintext highlighter-rouge">InvalidOperationException</code> with FFI status code</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">NextStep</code> on blocked vertex</td>
+      <td><code class="language-plaintext highlighter-rouge">InvalidOperationException</code> — wrap in try/catch in per-frame loops</td>
+    </tr>
+    <tr>
+      <td>Graph not built yet</td>
+      <td><code class="language-plaintext highlighter-rouge">InvalidOperationException</code> on any query or field operation</td>
+    </tr>
+    <tr>
+      <td>Solver already disposed</td>
+      <td><code class="language-plaintext highlighter-rouge">ObjectDisposedException</code></td>
+    </tr>
+    <tr>
+      <td>ABI version mismatch</td>
+      <td><code class="language-plaintext highlighter-rouge">InvalidOperationException</code> at <code class="language-plaintext highlighter-rouge">DnskSolver</code> construction</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">pathBuffer</code> too small</td>
+      <td>Path is silently truncated to buffer capacity</td>
+    </tr>
+  </tbody>
+</table>
+
+        
+        <nav class="prevnext" aria-label="Adjacent pages">
+          <a class="pn prev" href="../docs/GettingStarted.html"><span class="lbl">Previous</span><span class="pg">Getting Started</span></a>
+          <a class="pn next" href="../docs/BringYourGraph.html"><span class="lbl">Next</span><span class="pg">Bring Your Graph</span></a>
+        </nav>
+        
+      </article>
+      <aside class="doc-rail" aria-label="Documentation">
+        <p class="grp">Documentation</p>
+        <nav>
+          
+            <a href="../docs/GettingStarted.html">Getting Started</a>
+          
+            <a href="../docs/API-Reference.html" class="active" aria-current="page">API Reference</a>
+          
+            <a href="../docs/BringYourGraph.html">Bring Your Graph</a>
+          
+            <a href="../docs/Troubleshooting.html">Troubleshooting</a>
+          
+            <a href="../docs/FAQ.html">FAQ</a>
+          
+            <a href="../LICENSE.html">License</a>
+          
+            <a href="../Third%20Party%20Notices.html">Third Party Notices</a>
+          
+        </nav>
+        <p class="grp" id="onpage-grp">On this page</p>
+        <nav id="onpage" class="onpage" aria-label="On this page"></nav>
+      </aside>
+    </div>
+    
+  </main>
+
+  <footer>
+  <div class="wrap frow">
+    <div>
+      <div class="fbrand">PathForge by Birdblu GmbH</div>
+      <div class="fcopy">© 2026 Birdblu GmbH</div>
+    </div>
+    <nav class="flinks" aria-label="Legal">
+      <a href="../index.html#impressum">Impressum</a>
+      <a href="../LICENSE.html">License</a>
+    </nav>
+  </div>
+</footer>
+
+
+  
+  <script>
+  (function () {
+    var content = document.querySelector('.doc-content');
+    var rail = document.getElementById('onpage');
+    if (!content || !rail) return;
+    var heads = content.querySelectorAll('h2, h3');
+    var list = [];
+    heads.forEach(function (h) {
+      if (!h.id) return;
+      var a = document.createElement('a');
+      a.className = 'toc' + (h.tagName === 'H3' ? ' sub' : '');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent;
+      rail.appendChild(a);
+      list.push({ h: h, a: a });
+    });
+    if (!list.length) {
+      var g = document.getElementById('onpage-grp');
+      if (g) g.style.display = 'none';
+      rail.style.display = 'none';
+      return;
+    }
+    function onScroll() {
+      var y = window.scrollY + 100;
+      var cur = list[0];
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].h.offsetTop <= y) cur = list[i];
+      }
+      list.forEach(function (it) { it.a.classList.remove('active'); });
+      if (cur) cur.a.classList.add('active');
+    }
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { onScroll(); }
+    else {
+      var ticking = false;
+      window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; requestAnimationFrame(function () { onScroll(); ticking = false; }); }
+      }, { passive: true });
+      onScroll();
+    }
+  })();
+  </script>
+  
+</body>
+</html>
